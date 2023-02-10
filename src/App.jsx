@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Stack, Typography, ThemeProvider } from '@mui/material'
+import { Stack, Typography, ThemeProvider, TextField } from '@mui/material'
 import { darkTheme } from './darkTheme';
 import { lightTheme } from './lightTheme';
 import { useTheme } from './contexts/themeContext';
@@ -9,6 +9,8 @@ import HowToModal from './howToModal';
 import { StyledIconButton } from './styledComponents/StyledIconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ModeNightIcon from '@mui/icons-material/ModeNight';
+import { StyledInput } from './styledComponents/StyledInput';
+import wordsFile from './words_alpha.txt'
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -17,11 +19,29 @@ function App() {
   const { isDarkMode, setIsDarkMode } = useTheme()
   const [playing, setPlaying] = useState(false)
   const [score, setScore] = useState(0)
-  const [letter, setLetter] = useState('')
+  const [randomLetter, setRandomLetter] = useState('')
+  const [inputWord, setInputWord] = useState("");
+  const [wordList, setWordList] = useState([]);
+  const [isValidInput, setIsValidInput] = useState(false);
 
   useEffect(() => {
-    setLetter(letters[Math.floor(Math.random() * letters.length)])
+    setRandomLetter(letters[Math.floor(Math.random() * letters.length)])
+    console.log(wordList[2])
   }, [playing])
+
+  useEffect(() => {
+    // Read the text file and split the contents into an array of words
+    fetch(wordsFile)
+      .then(response => response.text())
+      .then(text => setWordList(text.split("\n")));
+  }, []);
+
+  const handleKeyDown = event => {
+    if (event.keyCode === 13) {
+      // Enter key was pressed
+      console.log("Enter key was pressed");
+    }
+  };
 
   document.body.style.backgroundColor = isDarkMode ? '#171717' : '#fafafa'
   document.body.style.color = isDarkMode ? '#b6b4b4' : '#3b3b3b'
@@ -46,9 +66,10 @@ function App() {
           </Stack>
           <Stack spacing={1}>
             <Typography variant='h6'>Type a word that starts with</Typography>
-            <Typography variant='h2'>{letter}</Typography>
+            <Typography variant='h2'>{randomLetter}</Typography>
           </Stack>
-          <StyledButton color='primary' variant='contained' sx={{width: '20%'}} onClick={() => setPlaying(false)}>Back</StyledButton>
+          <StyledInput type="text" InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onKeyDown={handleKeyDown} />
+          <StyledButton color='primary' variant='contained' sx={{ width: '20%' }} onClick={() => setPlaying(false)}>Back</StyledButton>
         </Stack>
       }
       <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }}>
