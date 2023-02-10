@@ -19,11 +19,35 @@ function App() {
   const { isDarkMode, setIsDarkMode } = useTheme()
   const [playing, setPlaying] = useState(false)
   const [score, setScore] = useState(0)
-  const [randomLetter, setRandomLetter] = useState('')
-  const [inputWord, setInputWord] = useState("");
-  const [wordList, setWordList] = useState([]);
+  const [letter, setLetter] = useState('')
+  const [inputWord, setInputWord] = useState("")
+  const [error, setError] = useState('')
+  const [wordList, setWordList] = useState([])
+  const [usedWords, setUsedWords] = useState([])
+  const [timeLeft, setTimeLeft] = useState(3)
+  const [gameOver, setGameOver] = useState(false)
+
   useEffect(() => {
-    setRandomLetter(letters[Math.floor(Math.random() * letters.length)])
+    let timerId;
+    if (timeLeft > 0) {
+      timerId = setInterval(() => {
+        setTimeLeft(timeLeft - 1);
+      }, 1000);
+    } else {
+      // setGameOver(true);
+    }
+
+    return () => {
+      clearInterval(timerId);
+    };
+  }, [timeLeft, playing]);
+
+  useEffect(() => {
+    setLetter(letters[Math.floor(Math.random() * letters.length)])
+    setScore(0)
+    setUsedWords([])
+    setError('')
+    setTimeLeft(3)
   }, [playing])
 
   useEffect(() => {
@@ -34,10 +58,27 @@ function App() {
   }, []);
 
   const handleWordSubmit = event => {
-    if (event.keyCode === 13) {
-      // Enter key was pressed
+    if (event.keyCode === 13) { // Enter key was pressed
+      if (wordList.includes(inputWord)) {
+        if (inputWord.charAt(0).toUpperCase() == letter) {
+          if (usedWords.includes(inputWord)) {
+            setError('Already used this word!')
+            return
+          }
+          setError('')
+          setUsedWords([...usedWords, inputWord])
+          setScore(prev => prev + 1)
+          setInputWord('')
+          setTimeLeft(3)
+          setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
+        } else {
+          setError('Word must start with ' + letter)
+        }
+      } else {
+        setError('Not a word :/')
+      }
       console.log(wordList.includes(inputWord));
-      console.log(wordList);
+      console.log(usedWords);
       console.log(inputWord);
     }
   };
@@ -52,23 +93,42 @@ function App() {
           <Typography variant='h2' color='primary'>KeepTyping</Typography>
           <Stack spacing={10} sx={{ m: 10 }}>
             <StyledButton color='primary' variant='contained' onClick={() => setIsHTPModalOpen(true)}>How to play</StyledButton>
-            <StyledButton color='primary' variant='contained' onClick={() => setPlaying(true)}>Play</StyledButton>
+            <StyledButton color='primary' variant='contained'
+              onClick={() => {
+                setPlaying(true)
+                setGameOver(false)
+              }}>Play</StyledButton>
           </Stack>
         </Stack>
       }
       {
-        playing &&
+        (playing && !gameOver) &&
         <Stack spacing={10} sx={{ m: 10, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Stack direction={'row'} spacing={20}>
-            <Typography variant='h2'>Timer: </Typography>
+            <Typography variant='h2'>Timer: {timeLeft}</Typography>
             <Typography variant='h2'>Score: {score}</Typography>
           </Stack>
           <Stack spacing={1}>
             <Typography variant='h6'>Type a word that starts with</Typography>
-            <Typography variant='h2' color='primary'>{randomLetter}</Typography>
+            <Typography variant='h2' color='primary'>{letter}</Typography>
           </Stack>
-          <StyledInput type="text" InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onChange={e => setInputWord(e.target.value)} onKeyDown={handleWordSubmit} inputProps={{ style: { fontSize: 40 }, autoComplete: 'off' }} />
+          <StyledInput type="text" value={inputWord} InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onChange={e => setInputWord(e.target.value)} onKeyDown={handleWordSubmit} inputProps={{ style: { fontSize: 40 }, autoComplete: 'off' }} />
+          <Typography variant='h6' color='red'>{error}</Typography>
           <StyledButton color='primary' variant='contained' sx={{ width: '20%' }} onClick={() => setPlaying(false)}>Back</StyledButton>
+        </Stack>
+      }
+      {
+        (playing && gameOver) &&
+        <Stack spacing={10} sx={{ m: 10, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Stack spacing={10}>
+            <Typography variant='h2' color='error'>Time is up!</Typography>
+            <Typography variant='h2'>Your score was<Typography variant='h2' color='primary'>{score}</Typography></Typography>
+          </Stack>
+          <StyledButton color='primary' variant='contained' sx={{ width: '20%' }}
+            onClick={() => {
+              setGameOver(false)
+              setPlaying(false)
+            }}>Home</StyledButton>
         </Stack>
       }
       <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }}>
