@@ -97,6 +97,7 @@ function App() {
               onClick={() => {
                 setPlaying(true)
                 setGameOver(false)
+                setTimeLeft(3)
               }}>Play</StyledButton>
           </Stack>
         </Stack>
