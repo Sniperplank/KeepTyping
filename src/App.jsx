@@ -22,24 +22,23 @@ function App() {
   const [randomLetter, setRandomLetter] = useState('')
   const [inputWord, setInputWord] = useState("");
   const [wordList, setWordList] = useState([]);
-  const [isValidInput, setIsValidInput] = useState(false);
-
   useEffect(() => {
     setRandomLetter(letters[Math.floor(Math.random() * letters.length)])
-    console.log(wordList[2])
   }, [playing])
 
   useEffect(() => {
     // Read the text file and split the contents into an array of words
     fetch(wordsFile)
       .then(response => response.text())
-      .then(text => setWordList(text.split("\n")));
+      .then(text => setWordList(text.split("\r\n")));
   }, []);
 
-  const handleKeyDown = event => {
+  const handleWordSubmit = event => {
     if (event.keyCode === 13) {
       // Enter key was pressed
-      console.log("Enter key was pressed");
+      console.log(wordList.includes(inputWord));
+      console.log(wordList);
+      console.log(inputWord);
     }
   };
 
@@ -50,7 +49,7 @@ function App() {
       {
         !playing &&
         <Stack>
-          <Typography variant='h2'>KeepTyping</Typography>
+          <Typography variant='h2' color='primary'>KeepTyping</Typography>
           <Stack spacing={10} sx={{ m: 10 }}>
             <StyledButton color='primary' variant='contained' onClick={() => setIsHTPModalOpen(true)}>How to play</StyledButton>
             <StyledButton color='primary' variant='contained' onClick={() => setPlaying(true)}>Play</StyledButton>
@@ -66,9 +65,9 @@ function App() {
           </Stack>
           <Stack spacing={1}>
             <Typography variant='h6'>Type a word that starts with</Typography>
-            <Typography variant='h2'>{randomLetter}</Typography>
+            <Typography variant='h2' color='primary'>{randomLetter}</Typography>
           </Stack>
-          <StyledInput type="text" InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onKeyDown={handleKeyDown} />
+          <StyledInput type="text" InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onChange={e => setInputWord(e.target.value)} onKeyDown={handleWordSubmit} inputProps={{ style: { fontSize: 40 }, autoComplete: 'off' }} />
           <StyledButton color='primary' variant='contained' sx={{ width: '20%' }} onClick={() => setPlaying(false)}>Back</StyledButton>
         </Stack>
       }
