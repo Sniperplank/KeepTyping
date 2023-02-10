@@ -7,7 +7,7 @@ export const darkTheme = createTheme({
             light: "#ffb74d"
         },
         secondary: {
-            main: "#26231d",
+            main: "#262626",
             light: "#302e28"
         },
         buttonText: {

@@ -9,7 +9,7 @@ function HowToModal({ open, onClose }) {
     return ReactDOM.createPortal(
         <>
             <ModalOverlay onClick={onClose} />
-            <ModalContent>
+            <ModalContent sx={{ padding: { xs: 1, sm: '50px' }, left: { xs: 0, sm: '50%' }, top: { xs: 0, sm: '50%' }, transform: { xs: 'translate(0)', sm: 'translate(-50%, -50%)' } }}>
                 <Typography variant='h4'>How to Play</Typography>
                 <Stack spacing={3} marginTop={2} marginBottom={2}>
                     <Typography variant='h6'>- When you start, a random letter will be generated</Typography>
