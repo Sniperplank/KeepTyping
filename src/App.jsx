@@ -77,9 +77,6 @@ function App() {
       } else {
         setError('Not a word :/')
       }
-      console.log(wordList.includes(inputWord));
-      console.log(usedWords);
-      console.log(inputWord);
     }
   };
 
@@ -98,6 +95,7 @@ function App() {
                 setPlaying(true)
                 setGameOver(false)
                 setTimeLeft(3)
+                setInputWord('')
               }}>Play</StyledButton>
           </Stack>
         </Stack>

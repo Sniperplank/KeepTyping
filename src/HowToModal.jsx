@@ -18,7 +18,7 @@ function HowToModal({ open, onClose }) {
                     <Typography variant='h6'>- Keep going, typing words that start with the last letter of the previous word and see how many points you can get</Typography>
                 </Stack>
                 <Stack direction='row' spacing={2} marginTop={3} justifyContent='right'>
-                    <Button variant='contained' color='error' onClick={onClose}>Close</Button>
+                    <Button variant='contained' color='primary' onClick={onClose}>Close</Button>
                 </Stack>
             </ModalContent>
         </>,

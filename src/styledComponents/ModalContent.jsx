@@ -11,4 +11,7 @@ export const ModalContent = styled(Box)(({ theme }) => ({
     zIndex: 1000,
     borderRadius: 10,
     color: theme.palette.text.main,
+    border: 'solid',
+    borderWidth: 2,
+    borderColor: theme.palette.primary.main
 }));
