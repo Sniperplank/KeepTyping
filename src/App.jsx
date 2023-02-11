@@ -5,7 +5,7 @@ import { lightTheme } from './lightTheme';
 import { useTheme } from './contexts/themeContext';
 import './App.css'
 import { StyledButton } from './styledComponents/StyledButton';
-import HowToModal from './howToModal';
+import HowToModal from './HowToModal';
 import { StyledIconButton } from './styledComponents/StyledIconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ModeNightIcon from '@mui/icons-material/ModeNight';
