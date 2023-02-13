@@ -54,7 +54,7 @@ function App() {
     // Read the text file and split the contents into an array of words
     fetch(wordsFile)
       .then(response => response.text())
-      .then(text => setWordList(text.split("\r")));
+      .then(text => setWordList(text.split("\n")));
   }, []);
 
   const handleWordSubmit = event => {
