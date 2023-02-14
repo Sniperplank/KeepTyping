@@ -34,7 +34,7 @@ function App() {
         setTimeLeft(timeLeft - 1);
       }, 1000);
     } else {
-      setGameOver(true);
+      // setGameOver(true);
     }
 
     return () => {
@@ -104,8 +104,8 @@ function App() {
       {
         (playing && !gameOver) &&
         <Stack spacing={10} sx={{ m: 10, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <p className='timer'>{timeLeft}</p>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 5, sm: 20 }}>
-            <Typography variant='h2'>Timer: {timeLeft}</Typography>
             <Typography variant='h2'>Score: {score}</Typography>
           </Stack>
           <Stack spacing={1}>
