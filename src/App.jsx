@@ -34,7 +34,7 @@ function App() {
         setTimeLeft(timeLeft - 1);
       }, 1000);
     } else {
-      // setGameOver(true);
+      setGameOver(true);
     }
 
     return () => {
