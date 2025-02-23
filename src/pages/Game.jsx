@@ -2,6 +2,7 @@ import { Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { StyledButton } from '../styledComponents/StyledButton'
 import { StyledInput } from '../styledComponents/StyledInput'
+import { useWordList } from '../contexts/wordListContext'
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -13,6 +14,7 @@ function Game() {
     const [letter, setLetter] = useState('')
     const [inputWord, setInputWord] = useState("")
     const [error, setError] = useState('')
+    const { wordList, setWordList } = useWordList()
 
     useEffect(() => {
         setLetter(letters[Math.floor(Math.random() * letters.length)])
