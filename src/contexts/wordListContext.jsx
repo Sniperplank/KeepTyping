@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import wordsFile from '../words_alpha.txt'
 
 const WordListContext = createContext()
@@ -19,7 +19,7 @@ export function WordListProvider({ children }) {
         // Read the text file and split the contents into an array of words
         fetch(wordsFile)
           .then(response => response.text())
-          .then(text => setWordList(text.split("\n")))
+          .then(text => setWordList(text.split("\n").map(word => word.trim())))
       }, [])
 
     return (
