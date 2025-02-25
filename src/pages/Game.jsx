@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { StyledButton } from '../styledComponents/StyledButton'
 import { StyledInput } from '../styledComponents/StyledInput'
 import { useWordList } from '../contexts/wordListContext'
+import { useNavigate } from 'react-router-dom'
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -15,6 +16,7 @@ function Game() {
     const [inputWord, setInputWord] = useState("")
     const [error, setError] = useState('')
     const { wordList, setWordList } = useWordList()
+    const navigate = useNavigate()
 
     useEffect(() => {
         setLetter(letters[Math.floor(Math.random() * letters.length)])
@@ -31,7 +33,7 @@ function Game() {
                 setTimeLeft(timeLeft - 1)
             }, 1000)
         } else {
-            setGameOver(true)
+            navigate('/gameover') // Time ran out
         }
 
         return () => {
