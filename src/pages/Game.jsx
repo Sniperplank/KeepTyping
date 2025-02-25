@@ -33,7 +33,7 @@ function Game() {
                 setTimeLeft(timeLeft - 1)
             }, 1000)
         } else {
-            navigate('/gameover') // Time ran out
+            navigate('/gameover', { state: { score: score } }) // Time ran out
         }
 
         return () => {
