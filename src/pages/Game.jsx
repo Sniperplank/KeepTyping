@@ -10,7 +10,6 @@ const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 function Game() {
     const [usedWords, setUsedWords] = useState([])
     const [timeLeft, setTimeLeft] = useState(3)
-    const [gameOver, setGameOver] = useState(false)
     const [score, setScore] = useState(0)
     const [letter, setLetter] = useState('')
     const [inputWord, setInputWord] = useState("")
@@ -76,7 +75,7 @@ function Game() {
             </Stack>
             <StyledInput type="text" value={inputWord} InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onChange={e => setInputWord(e.target.value)} onKeyDown={handleWordSubmit} inputProps={{ style: { fontSize: 40 }, autoComplete: 'off' }} />
             <Typography variant='h6' color='red'>{error}</Typography>
-            <StyledButton color='primary' variant='contained' sx={{ width: '20%' }} onClick={() => setPlaying(false)}>Back</StyledButton>
+            <StyledButton color='primary' variant='contained' sx={{ width: '20%' }} onClick={() => {navigate(-1)}}>Back</StyledButton>
         </Stack>
     )
 }
