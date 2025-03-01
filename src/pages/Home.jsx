@@ -9,11 +9,16 @@ function Home() {
     const navigate = useNavigate()
 
     return (
-        <Stack>
+        <Stack spacing={10} justifyContent='center'>
             <Typography variant='h2' color='primary'>KeepTyping</Typography>
-            <Stack spacing={10} sx={{ m: 10 }}>
+            <Stack spacing={10} direction='row' justifyContent='center'>
+                <StyledButton color='primary' variant='contained' onClick={() => { navigate('/play') }}>Quick Game</StyledButton>
+                <StyledButton color='primary' variant='contained' onClick={() => {  }}>Hard Game</StyledButton>
+                <StyledButton color='primary' variant='contained' onClick={() => {  }}>Categories Game</StyledButton>
+            </Stack>
+            <Stack spacing={10} direction='row' justifyContent='center'>
                 <StyledButton color='primary' variant='contained' onClick={() => setIsHTPModalOpen(true)}>How to play</StyledButton>
-                <StyledButton color='primary' variant='contained' onClick={() => { navigate('/play') }}>Play</StyledButton>
+                <StyledButton color='primary' variant='contained' onClick={() => setIsHTPModalOpen(true)}>Sign In</StyledButton>
             </Stack>
             <HowToModal open={isHTPModalOpen} onClose={() => setIsHTPModalOpen(false)} />
         </Stack>

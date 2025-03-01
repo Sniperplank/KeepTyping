@@ -25,7 +25,7 @@ function App() {
           <Route path='/play' element={<Game />} />
           <Route path='/gameover' element={<Score />} />
         </Routes>
-        <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }} sx={{ alignSelf: 'center' }}>
+        <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }} sx={{ alignSelf: 'center', m: 10 }}>
           {isDarkMode ? <LightModeIcon color={'primary'} /> : <ModeNightIcon color={'primary'} />}
         </StyledIconButton>
       </Stack>
