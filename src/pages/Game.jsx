@@ -6,10 +6,11 @@ import { useWordList } from '../contexts/wordListContext'
 import { useNavigate } from 'react-router-dom'
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const time = 4
 
 function Game() {
     const [usedWords, setUsedWords] = useState([])
-    const [timeLeft, setTimeLeft] = useState(3)
+    const [timeLeft, setTimeLeft] = useState(time)
     const [score, setScore] = useState(0)
     const [letter, setLetter] = useState('')
     const [inputWord, setInputWord] = useState("")
@@ -22,7 +23,7 @@ function Game() {
         setScore(0)
         setUsedWords([])
         setError('')
-        setTimeLeft(3)
+        setTimeLeft(time)
     }, [])
 
     useEffect(() => {
@@ -52,7 +53,7 @@ function Game() {
                     setUsedWords([...usedWords, inputWord])
                     setScore(prev => prev + 1)
                     setInputWord('')
-                    setTimeLeft(3)
+                    setTimeLeft(time)
                     setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
                 } else {
                     setError('Word must start with ' + letter)
