@@ -64,18 +64,16 @@ function Game() {
     }
 
     return (
-        <Stack spacing={10} sx={{ m: 10, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <p className='timer'>{timeLeft}</p>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 5, sm: 20 }}>
-                <Typography variant='h2'>Score: {score}</Typography>
-            </Stack>
+        <Stack spacing={10} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography variant='h4'>Score: {score}</Typography>
             <Stack spacing={1}>
                 <Typography variant='h6'>Type a word that starts with</Typography>
                 <Typography variant='h2' color='primary'>{letter}</Typography>
             </Stack>
             <StyledInput type="text" value={inputWord} InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onChange={e => setInputWord(e.target.value)} onKeyDown={handleWordSubmit} inputProps={{ style: { fontSize: 40 }, autoComplete: 'off' }} />
             <Typography variant='h6' color='red'>{error}</Typography>
-            <StyledButton color='primary' variant='contained' sx={{ width: '20%' }} onClick={() => {navigate(-1)}}>Back</StyledButton>
+            <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main' }} onClick={() => { navigate(-1) }}>Back</StyledButton>
+            <p className='timer'>{timeLeft}</p>
         </Stack>
     )
 }
