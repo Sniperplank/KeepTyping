@@ -9,7 +9,7 @@ function Score() {
     const navigate = useNavigate()
 
     return (
-        <Stack spacing={10} sx={{ m: 10, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Stack spacing={10} sx={{display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Stack spacing={10}>
                 <Typography variant='h2' color='error'>Time is up!</Typography>
                 <Typography variant='h2'>Your score was<Typography variant='h2' color='primary'>{score}</Typography></Typography>
