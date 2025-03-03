@@ -9,13 +9,15 @@ function Score() {
     const navigate = useNavigate()
 
     return (
-        <Stack spacing={10} sx={{display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Stack spacing={10} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Stack spacing={10}>
-                <Typography variant='h2' color='error'>Time is up!</Typography>
+                <Typography variant='h2' color='error'>TIME IS UP!</Typography>
                 <Typography variant='h2'>Your score was<Typography variant='h2' color='primary'>{score}</Typography></Typography>
             </Stack>
-            <StyledButton color='primary' variant='contained' sx={{ width: '20%' }} onClick={() => { navigate('/play') }}>Play Again</StyledButton>
-            <StyledButton color='primary' variant='contained' sx={{ width: '20%' }} onClick={() => { navigate('/') }}>Home</StyledButton>
+            <Stack direction='row' spacing={5}>
+                <StyledButton color='primary' variant='contained' sx={{width: 1/2}} onClick={() => { navigate(-1) }}>Play Again</StyledButton>
+                <StyledButton color='primary' variant='contained' sx={{width: 1/2}} onClick={() => { navigate('/') }}>Home</StyledButton>
+            </Stack>
         </Stack>
     )
 }
