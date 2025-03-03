@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import wordsFile from '../words_alpha.txt'
+import wordsFile from '../categories/words_alpha.txt'
 
 const WordListContext = createContext()
 
