@@ -6,9 +6,9 @@ import './App.css'
 import { StyledIconButton } from './styledComponents/StyledIconButton'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import ModeNightIcon from '@mui/icons-material/ModeNight'
-import Home from './pages/home'
+import Home from './pages/Home'
 import { Route, Routes, useLocation } from 'react-router-dom'
-import Game from './pages/Game'
+import QuickGame from './pages/QuickGame'
 import Score from './pages/Score'
 import { StyledButton } from './styledComponents/StyledButton'
 import KeyboardIcon from '@mui/icons-material/Keyboard';
@@ -36,7 +36,7 @@ function App() {
         }
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/play' element={<Game />} />
+          <Route path='/quick-play' element={<QuickGame />} />
           <Route path='/gameover' element={<Score />} />
         </Routes>
       </Stack>
