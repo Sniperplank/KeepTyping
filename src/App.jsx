@@ -12,6 +12,7 @@ import QuickGame from './pages/QuickGame'
 import Score from './pages/Score'
 import { StyledButton } from './styledComponents/StyledButton'
 import KeyboardIcon from '@mui/icons-material/Keyboard';
+import HardGame from './pages/HardGame'
 
 function App() {
   const { isDarkMode, setIsDarkMode } = useTheme()
@@ -23,20 +24,22 @@ function App() {
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <Stack>
-        {location.path !== '/' &&
-          <Stack direction='row' justifyContent='space-around' sx={{ mb: 15 }}>
+        <Stack direction='row' justifyContent='space-around' sx={{ mb: 15 }}>
+          <Stack direction='row' spacing={2}>
             <KeyboardIcon fontSize='large' color='primary' />
-            <Stack direction='row' spacing={2}>
-              <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }}>
-                {isDarkMode ? <LightModeIcon color={'primary'} /> : <ModeNightIcon color={'primary'} />}
-              </StyledIconButton>
-              <StyledButton variant='outlined' color='primary' sx={{ color: 'text.main' }}>Sign In</StyledButton>
-            </Stack>
+            {location.pathname !== '/' && <Typography variant='h5' color='primary' fontWeight='bold'>KeepTyping</Typography>}
           </Stack>
-        }
+          <Stack direction='row' spacing={2}>
+            <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }}>
+              {isDarkMode ? <LightModeIcon color={'primary'} /> : <ModeNightIcon color={'primary'} />}
+            </StyledIconButton>
+            <StyledButton variant='outlined' color='primary' sx={{ color: 'text.main' }}>Sign In</StyledButton>
+          </Stack>
+        </Stack>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/quick-play' element={<QuickGame />} />
+          <Route path='/hard-play' element={<HardGame />} />
           <Route path='/gameover' element={<Score />} />
         </Routes>
       </Stack>
