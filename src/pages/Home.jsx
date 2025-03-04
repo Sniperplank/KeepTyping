@@ -15,9 +15,9 @@ function Home() {
         <Stack spacing={15} justifyContent='center'>
             <Typography variant='h1' color='primary' fontWeight='bold'>KeepTyping</Typography>
             <Stack spacing={10} direction='row' justifyContent='center'>
-                <StyledButton color='primary' variant='contained' sx={{width: 1/3}} startIcon={<RocketLaunchIcon />} onClick={() => { navigate('/quick-play') }}>Quick Game</StyledButton>
-                <StyledButton color='primary' variant='contained' sx={{width: 1/3}} startIcon={<ShapeLineIcon />} onClick={() => { }}>Hard Game</StyledButton>
-                <StyledButton color='primary' variant='contained' sx={{width: 1/3}} startIcon={<CategoryIcon />} onClick={() => { }}>Categories Game</StyledButton>
+                <StyledButton color='primary' variant='contained' sx={{ width: 1 / 3 }} startIcon={<RocketLaunchIcon />} onClick={() => { navigate('/quick-play') }}>Quick Game</StyledButton>
+                <StyledButton color='primary' variant='contained' sx={{ width: 1 / 3 }} startIcon={<ShapeLineIcon />} onClick={() => { navigate('/hard-play') }}>Hard Game</StyledButton>
+                <StyledButton color='primary' variant='contained' sx={{ width: 1 / 3 }} startIcon={<CategoryIcon />} onClick={() => { }}>Categories Game</StyledButton>
             </Stack>
             <Stack spacing={10} direction='row' justifyContent='center'>
                 <StyledButton color='primary' variant='outlined' sx={{ color: 'text.main' }} onClick={() => setIsHTPModalOpen(true)}>How to play</StyledButton>
