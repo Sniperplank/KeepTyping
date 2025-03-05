@@ -15,6 +15,7 @@ function Score() {
                 <Typography variant='h2'>Your score was<Typography variant='h2' color='primary'>{score}</Typography></Typography>
             </Stack>
             <Stack direction='row' spacing={5}>
+                {/* add a button to save score if not signed in */}
                 <StyledButton color='primary' variant='contained' sx={{width: 1/2}} onClick={() => { navigate(-1) }}>Play Again</StyledButton>
                 <StyledButton color='primary' variant='contained' sx={{width: 1/2}} onClick={() => { navigate('/') }}>Home</StyledButton>
             </Stack>
