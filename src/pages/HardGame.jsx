@@ -4,6 +4,8 @@ import { StyledButton } from '../styledComponents/StyledButton'
 import { StyledInput } from '../styledComponents/StyledInput'
 import { useWordList } from '../contexts/wordListContext'
 import { useNavigate } from 'react-router-dom'
+import Divider from '@mui/material/Divider'
+import CharacterInput from '../styledComponents/CharacterInput'
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const time = 6
@@ -43,10 +45,14 @@ function HardGame() {
         }
     }, [timeLeft])
 
+    const handleWordChange = (value) => {
+        setInputWord(value)
+    }
+
     const handleWordSubmit = event => {
         if (event.keyCode === 13) { // Enter key was pressed
-            if (wordList.includes(inputWord)) {
-                if (inputWord.length === wordLength) {
+            if (inputWord.length === wordLength) {
+                if (wordList.includes(inputWord)) {
                     if (inputWord.charAt(0).toUpperCase() == letter) {
                         if (usedWords.includes(inputWord)) {
                             setError('Already used this word!')
@@ -63,10 +69,10 @@ function HardGame() {
                         setError('Word must start with ' + letter)
                     }
                 } else {
-                    setError(`Word must be ${wordLength} letters long!`)
+                    setError('Not a word :/')
                 }
             } else {
-                setError('Not a word :/')
+                setError(`Word must be ${wordLength} letters long!`)
             }
         }
     }
@@ -82,8 +88,8 @@ function HardGame() {
                 </Stack>
                 <Typography variant='h2' color='primary'>{letter}</Typography>
             </Stack>
-            <StyledInput type="text" value={inputWord} InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onChange={e => setInputWord(e.target.value)} onKeyDown={handleWordSubmit} inputProps={{ style: { fontSize: 40 }, autoComplete: 'off' }} />
-            <Typography variant='h6' color='red'>{error}</Typography>
+            <CharacterInput length={wordLength} value={inputWord} onChange={handleWordChange} onKeyDown={handleWordSubmit} />
+            <Typography variant='h5' color='red'>{error}</Typography>
             <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main' }} onClick={() => { navigate(-1) }}>Back</StyledButton>
             <p className='timer'>{timeLeft}</p>
         </Stack>
