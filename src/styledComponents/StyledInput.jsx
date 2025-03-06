@@ -24,5 +24,8 @@ export const StyledInput = styled(TextField)(({ theme }) => ({
     },
     '& .MuiInputBase-root': {
         color: theme.palette.text.input,
+        '& input': {
+            textAlign: 'center',
+        },
     },
 }));
