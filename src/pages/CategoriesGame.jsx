@@ -55,20 +55,20 @@ function CategoriesGame() {
             switch (chosenCategory.toUpperCase()) {
                 case 'ANIMAL':
                     if (animalsList.includes(inputWord.toUpperCase())) {
-                        if (inputWord.charAt(0).toUpperCase() == letter) {
-                            if (usedWords.includes(inputWord)) {
+                        if (inputWord.toUpperCase().includes(letter)) {
+                            if (usedWords.includes(inputWord.toUpperCase())) {
                                 setError('Already used this word!')
                                 return
                             }
                             setError('')
-                            setUsedWords([...usedWords, inputWord])
+                            setUsedWords([...usedWords, inputWord.toUpperCase()])
                             setScore(prev => prev + 1)
                             setInputWord('')
                             setTimeLeft(time)
                             setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
                             setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
                         } else {
-                            setError('Word must start with ' + letter)
+                            setError('Word must include the letter ' + letter)
                         }
                     } else {
                         setError('Not an animal :/')
@@ -76,20 +76,20 @@ function CategoriesGame() {
                     break;
                 case 'COUNTRY':
                     if (countriesList.includes(inputWord.toUpperCase())) {
-                        if (inputWord.charAt(0).toUpperCase() == letter) {
-                            if (usedWords.includes(inputWord)) {
+                        if (inputWord.toUpperCase().includes(letter)) {
+                            if (usedWords.includes(inputWord.toUpperCase())) {
                                 setError('Already used this word!')
                                 return
                             }
                             setError('')
-                            setUsedWords([...usedWords, inputWord])
+                            setUsedWords([...usedWords, inputWord.toUpperCase()])
                             setScore(prev => prev + 1)
                             setInputWord('')
                             setTimeLeft(time)
                             setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
                             setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
                         } else {
-                            setError('Word must start with ' + letter)
+                            setError('Word must include the letter ' + letter)
                         }
                     } else {
                         setError('Not a country :/')
@@ -97,20 +97,20 @@ function CategoriesGame() {
                     break;
                 case 'PLANT':
                     if (plantsList.includes(inputWord.toUpperCase())) {
-                        if (inputWord.charAt(0).toUpperCase() == letter) {
-                            if (usedWords.includes(inputWord)) {
+                        if (inputWord.toUpperCase().includes(letter)) {
+                            if (usedWords.includes(inputWord.toUpperCase())) {
                                 setError('Already used this word!')
                                 return
                             }
                             setError('')
-                            setUsedWords([...usedWords, inputWord])
+                            setUsedWords([...usedWords, inputWord.toUpperCase()])
                             setScore(prev => prev + 1)
                             setInputWord('')
                             setTimeLeft(time)
                             setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
                             setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
                         } else {
-                            setError('Word must start with ' + letter)
+                            setError('Word must include the letter ' + letter)
                         }
                     } else {
                         setError('Not a plant :/')
