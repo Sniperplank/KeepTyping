@@ -19,7 +19,7 @@ export function WordListProvider({ children }) {
         // Read the text file and split the contents into an array of words
         fetch(wordsFile)
           .then(response => response.text())
-          .then(text => setWordList(text.split("\n").map(word => word.trim())))
+          .then(text => setWordList(text.split("\n").map(word => word.trim().toUpperCase())))
       }, [])
 
     return (
