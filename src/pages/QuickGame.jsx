@@ -43,7 +43,7 @@ function QuickGame() {
 
     const handleWordSubmit = event => {
         if (event.keyCode === 13) { // Enter key was pressed
-            if (wordList.includes(inputWord)) {
+            if (wordList.includes(inputWord.toUpperCase())) {
                 if (inputWord.charAt(0).toUpperCase() == letter) {
                     if (usedWords.includes(inputWord)) {
                         setError('Already used this word!')

@@ -13,6 +13,7 @@ import Score from './pages/Score'
 import { StyledButton } from './styledComponents/StyledButton'
 import KeyboardIcon from '@mui/icons-material/Keyboard';
 import HardGame from './pages/HardGame'
+import CategoriesGame from './pages/CategoriesGame'
 
 function App() {
   const { isDarkMode, setIsDarkMode } = useTheme()
@@ -38,8 +39,9 @@ function App() {
         </Stack>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/quick-play' element={<QuickGame />} />
-          <Route path='/hard-play' element={<HardGame />} />
+          <Route path='/quick-game' element={<QuickGame />} />
+          <Route path='/hard-game' element={<HardGame />} />
+          <Route path='/categories-game' element={<CategoriesGame />} />
           <Route path='/gameover' element={<Score />} />
         </Routes>
       </Stack>

@@ -4,7 +4,6 @@ import { StyledButton } from '../styledComponents/StyledButton'
 import { StyledInput } from '../styledComponents/StyledInput'
 import { useWordList } from '../contexts/wordListContext'
 import { useNavigate } from 'react-router-dom'
-import Divider from '@mui/material/Divider'
 import CharacterInput from '../styledComponents/CharacterInput'
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -52,7 +51,7 @@ function HardGame() {
     const handleWordSubmit = event => {
         if (event.keyCode === 13) { // Enter key was pressed
             if (inputWord.length === wordLength) {
-                if (wordList.includes(inputWord)) {
+                if (wordList.includes(inputWord.toUpperCase())) {
                     if (inputWord.charAt(0).toUpperCase() == letter) {
                         if (usedWords.includes(inputWord)) {
                             setError('Already used this word!')
