@@ -62,7 +62,7 @@ const CharacterInput = ({ length, onChange, onKeyDown, value = '' }) => {
     }
 
     return (
-        <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box sx={{ display: 'flex', gap: 2, width: '100%', justifyContent: 'center'}}>
             {Array.from({ length }).map((_, index) => (
                 <StyledInput
                     key={index}

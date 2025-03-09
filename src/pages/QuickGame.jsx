@@ -65,10 +65,10 @@ function QuickGame() {
     }
 
     return (
-        <Stack spacing={10} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Stack spacing={{ xs: 5, sm: 10 }} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Stack spacing={5}>
                 <Typography variant='h5'>Score: {score}</Typography>
-                <Typography variant='h3'>Type a word that starts with</Typography>
+                <Typography variant='h3' sx={{ fontSize: { xs: 30, sm: 50 } }}>Type a word that starts with</Typography>
                 <Typography variant='h2' color='primary'>{letter}</Typography>
             </Stack>
             <StyledInput type="text" value={inputWord} InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onChange={e => setInputWord(e.target.value)} onKeyDown={handleWordSubmit} inputProps={{ style: { fontSize: 40 }, autoComplete: 'off' }} />

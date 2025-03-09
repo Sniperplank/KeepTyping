@@ -26,7 +26,7 @@ function App() {
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <Stack>
         <Stack direction='row' justifyContent='space-around' sx={{ mb: 15 }}>
-          <Stack direction='row' spacing={2}>
+          <Stack direction='row' spacing={2} alignItems='center'>
             <KeyboardIcon fontSize='large' color='primary' />
             {location.pathname !== '/' && <Typography variant='h5' color='primary' fontWeight='bold'>KeepTyping</Typography>}
           </Stack>

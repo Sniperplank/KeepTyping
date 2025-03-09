@@ -77,13 +77,13 @@ function HardGame() {
     }
 
     return (
-        <Stack spacing={10} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Stack spacing={{ xs: 5, sm: 10 }} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Stack spacing={5}>
                 <Typography variant='h5'>Score: {score}</Typography>
-                <Stack direction='row' spacing={2}>
-                    <Typography variant='h3'>Type a </Typography>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                    <Typography variant='h3' sx={{ fontSize: { xs: 30, sm: 50 } }}>Type a </Typography>
                     <Typography variant='h3' color='primary'>{wordLength}</Typography>
-                    <Typography variant='h3'>letter word that starts with</Typography>
+                    <Typography variant='h3' sx={{ fontSize: { xs: 30, sm: 50 } }}>letter word that starts with</Typography>
                 </Stack>
                 <Typography variant='h2' color='primary'>{letter}</Typography>
             </Stack>
