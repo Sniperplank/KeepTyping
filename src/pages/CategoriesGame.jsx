@@ -7,10 +7,11 @@ import { useNavigate } from 'react-router-dom'
 import { useAnimalList } from '../contexts/animalsListContext'
 import { useCountryList } from '../contexts/countriesListContext'
 import { usePlantList } from '../contexts/plantsListContext'
+import { useColorList } from '../contexts/colorsListContext'
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-const time = 15
-const categories = ['Animal', 'Plant', 'Country']
+const time = 10
+const categories = ['Animal', 'Plant', 'Country', 'Color']
 
 function CategoriesGame() {
     const [usedWords, setUsedWords] = useState([])
@@ -19,10 +20,11 @@ function CategoriesGame() {
     const [letter, setLetter] = useState('')
     const [inputWord, setInputWord] = useState("")
     const [error, setError] = useState('')
-    const { wordList, setWordList } = useWordList()
-    const { animalsList, setAnimalList } = useAnimalList()
-    const { countriesList, setCountryList } = useCountryList()
-    const { plantsList, setPlanyList } = usePlantList()
+    // const { wordList, setWordList } = useWordList()
+    const { animalsList, setAnimalsList } = useAnimalList()
+    const { countriesList, setCountriesList } = useCountryList()
+    const { plantsList, setPlantsList } = usePlantList()
+    const { colorsList, setColorsList } = useColorList()
     const [chosenCategory, setChosenCategory] = useState('')
     const navigate = useNavigate()
 
@@ -42,7 +44,7 @@ function CategoriesGame() {
                 setTimeLeft(timeLeft - 1)
             }, 1000)
         } else {
-            // navigate('/gameover', { state: { score: score } }) // Time ran out
+            navigate('/gameover', { state: { score: score } }) // Time ran out
         }
 
         return () => {
@@ -116,6 +118,27 @@ function CategoriesGame() {
                         setError('Not a plant :/')
                     }
                     break;
+                case 'COLOR':
+                    if (colorsList.includes(inputWord.toUpperCase())) {
+                        if (inputWord.toUpperCase().includes(letter)) {
+                            if (usedWords.includes(inputWord.toUpperCase())) {
+                                setError('Already used this word!')
+                                return
+                            }
+                            setError('')
+                            setUsedWords([...usedWords, inputWord.toUpperCase()])
+                            setScore(prev => prev + 1)
+                            setInputWord('')
+                            setTimeLeft(time)
+                            setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
+                            setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
+                        } else {
+                            setError('Word must include the letter ' + letter)
+                        }
+                    } else {
+                        setError('Not a color :/')
+                    }
+                    break;
                 default:
                     break;
             }
@@ -123,13 +146,13 @@ function CategoriesGame() {
     }
 
     return (
-        <Stack spacing={10} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Stack spacing={{ xs: 5, sm: 10 }} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Stack spacing={5}>
                 <Typography variant='h5'>Score: {score}</Typography>
-                <Stack direction='row' spacing={2}>
-                    <Typography variant='h3'>Type {chosenCategory === 'Plant' || chosenCategory === 'Country' ? 'a' : 'an'} </Typography>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                    <Typography variant='h3' sx={{ fontSize: { xs: 30, sm: 50 } }}>Type {chosenCategory === 'Animal' ? 'an' : 'a'} </Typography>
                     <Typography variant='h3' color='primary'>{chosenCategory.toUpperCase()}</Typography>
-                    <Typography variant='h3'>name that includes the letter</Typography>
+                    <Typography variant='h3' sx={{ fontSize: { xs: 30, sm: 50 } }}>name that includes the letter</Typography>
                 </Stack>
                 <Typography variant='h2' color='primary'>{letter}</Typography>
             </Stack>
