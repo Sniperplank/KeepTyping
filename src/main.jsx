@@ -8,6 +8,7 @@ import { WordListProvider } from './contexts/wordListContext'
 import { AnimalListProvider } from './contexts/animalsListContext'
 import { CountryListProvider } from './contexts/countriesListContext'
 import { PlantListProvider } from './contexts/plantsListContext'
+import { ColorListProvider } from './contexts/colorsListContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <AnimalListProvider>
             <PlantListProvider>
               <CountryListProvider>
-                <App />
+                <ColorListProvider>
+                  <App />
+                </ColorListProvider>
               </CountryListProvider>
             </PlantListProvider>
           </AnimalListProvider>
