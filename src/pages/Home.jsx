@@ -12,9 +12,10 @@ function Home() {
     const navigate = useNavigate()
 
     return (
-        <Stack spacing={{ xs: 10, sm: 15 }} justifyContent='center'>
+        <Stack spacing={{ xs: 3, sm: 10 }} justifyContent='center'>
             <Typography variant='h1' color='primary' fontWeight='bold' alignSelf='center' sx={{ fontSize: { xs: 50, sm: 100 } }}>KeepTyping</Typography>
-            <Stack spacing={10} direction={{ xs: 'column', sm: 'row' }} justifyContent='space-evenly' alignItems='center'>
+            <Typography variant='h6' color='text.main' alignSelf='center'>The ultimate typing challenge! Test your speed, vocabulary, and quick thinking in three exciting game modes</Typography>
+            <Stack spacing={{ xs: 4, sm: 10 }} direction={{ xs: 'column', sm: 'row' }} justifyContent='space-evenly' alignItems='center'>
                 <StyledButton color='primary' variant='contained' sx={{ width: { xs: 1 / 2, sm: 1 / 3 } }} startIcon={<RocketLaunchIcon />} onClick={() => { navigate('/quick-game') }}>Quick Game</StyledButton>
                 <StyledButton color='primary' variant='contained' sx={{ width: { xs: 1 / 2, sm: 1 / 3 } }} startIcon={<ShapeLineIcon />} onClick={() => { navigate('/hard-game') }}>Hard Game</StyledButton>
                 <StyledButton color='primary' variant='contained' sx={{ width: { xs: 1 / 2, sm: 1 / 3 } }} startIcon={<CategoryIcon />} onClick={() => { navigate('/categories-game') }}>Categories Game</StyledButton>

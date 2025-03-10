@@ -13,6 +13,7 @@
   color: rgb(175, 27, 27);
   z-index: -1;
   animation: 2s ease 0s infinite beat;
+  overflow: hidden;
 }
 
 @keyframes beat {
