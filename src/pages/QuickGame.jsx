@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import typingsound from '../sounds/typingsound.mp3'
 import correctsound from '../sounds/correct.mp3'
 import wrongsound from '../sounds/wrong.mp3'
+import { useVolume } from '../contexts/volumeContext'
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const time = 4
@@ -20,6 +21,7 @@ function QuickGame() {
     const [error, setError] = useState('')
     const { wordList, setWordList } = useWordList()
     const navigate = useNavigate()
+    const { isVolumeOn, setIsVolumeOn } = useVolume()
 
     const typingAudioRef = useRef(null)
     const correctAudioRef = useRef(null)
@@ -80,7 +82,7 @@ function QuickGame() {
         // Play sound only for alphanumeric keys (letters and numbers)
         const isAlphanumeric = /^[a-zA-Z0-9]$/.test(event.key)
 
-        if (isAlphanumeric && typingAudioRef.current) {
+        if (isAlphanumeric && typingAudioRef.current && isVolumeOn) {
             typingAudioRef.current.currentTime = 0
             typingAudioRef.current.play().catch(e => console.error("Error playing 'typing' audio:", e))
         }
@@ -90,7 +92,7 @@ function QuickGame() {
                 if (inputWord.charAt(0).toUpperCase() == letter) {
                     if (usedWords.includes(inputWord)) {
                         setError('Already used this word!')
-                        if (wrongAudioRef.current) {
+                        if (wrongAudioRef.current && isVolumeOn) {
                             wrongAudioRef.current.currentTime = 0
                             wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                         }
@@ -102,20 +104,20 @@ function QuickGame() {
                     setInputWord('')
                     setTimeLeft(time)
                     setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
-                    if (correctAudioRef.current) {
+                    if (correctAudioRef.current && isVolumeOn) {
                         correctAudioRef.current.currentTime = 0
                         correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
                     }
                 } else {
                     setError('Word must start with ' + letter)
-                    if (wrongAudioRef.current) {
+                    if (wrongAudioRef.current && isVolumeOn) {
                         wrongAudioRef.current.currentTime = 0
                         wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                     }
                 }
             } else {
                 setError('Not a word :/')
-                if (wrongAudioRef.current) {
+                if (wrongAudioRef.current && isVolumeOn) {
                     wrongAudioRef.current.currentTime = 0
                     wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                 }

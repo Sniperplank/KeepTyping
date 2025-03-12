@@ -9,6 +9,7 @@ import { AnimalListProvider } from './contexts/animalsListContext'
 import { CountryListProvider } from './contexts/countriesListContext'
 import { PlantListProvider } from './contexts/plantsListContext'
 import { ColorListProvider } from './contexts/colorsListContext'
+import { VolumeProvider } from './contexts/volumeContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -19,7 +20,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <PlantListProvider>
               <CountryListProvider>
                 <ColorListProvider>
-                  <App />
+                  <VolumeProvider>
+                    <App />
+                  </VolumeProvider>
                 </ColorListProvider>
               </CountryListProvider>
             </PlantListProvider>

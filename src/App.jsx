@@ -11,12 +11,16 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import QuickGame from './pages/QuickGame'
 import Score from './pages/Score'
 import { StyledButton } from './styledComponents/StyledButton'
-import KeyboardIcon from '@mui/icons-material/Keyboard';
+import KeyboardIcon from '@mui/icons-material/Keyboard'
 import HardGame from './pages/HardGame'
 import CategoriesGame from './pages/CategoriesGame'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
+import VolumeOffIcon from '@mui/icons-material/VolumeOff'
+import { useVolume } from './contexts/volumeContext'
 
 function App() {
   const { isDarkMode, setIsDarkMode } = useTheme()
+  const { isVolumeOn, setIsVolumeOn } = useVolume()
   const location = useLocation()
 
   document.body.style.backgroundColor = isDarkMode ? '#171717' : '#fafafa'
@@ -33,6 +37,9 @@ function App() {
           <Stack direction='row' spacing={2}>
             <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }}>
               {isDarkMode ? <LightModeIcon color={'primary'} /> : <ModeNightIcon color={'primary'} />}
+            </StyledIconButton>
+            <StyledIconButton onClick={() => { setIsVolumeOn(prev => !prev) }}>
+              {isVolumeOn ? <VolumeUpIcon color={'primary'} /> : <VolumeOffIcon color={'primary'} />}
             </StyledIconButton>
             <StyledButton variant='outlined' color='primary' sx={{ color: 'text.main' }}>Sign In</StyledButton>
           </Stack>
