@@ -6,9 +6,12 @@ import HowToModal from '../HowToModal'
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
 import ShapeLineIcon from '@mui/icons-material/ShapeLine'
 import CategoryIcon from '@mui/icons-material/Category'
+import GroupIcon from '@mui/icons-material/Group';
+import OnlineModeModal from '../OnlineModeModal'
 
 function Home() {
     const [isHTPModalOpen, setIsHTPModalOpen] = useState(false)
+    const [isModeModalOpen, setIsModeModalOpen] = useState(false)
     const navigate = useNavigate()
 
     return (
@@ -21,10 +24,12 @@ function Home() {
                 <StyledButton color='primary' variant='contained' sx={{ width: { xs: 1 / 2, sm: 1 / 3 } }} startIcon={<CategoryIcon />} onClick={() => { navigate('/categories-game') }}>Categories Game</StyledButton>
             </Stack>
             <Stack spacing={10} direction='row' justifyContent='center'>
+                <StyledButton color='primary' variant='contained' startIcon={<GroupIcon />} onClick={() => setIsModeModalOpen(true)}>Play with friends</StyledButton>
                 <StyledButton color='primary' variant='outlined' sx={{ color: 'text.main' }} onClick={() => setIsHTPModalOpen(true)}>How to play</StyledButton>
             </Stack>
             <HowToModal open={isHTPModalOpen} onClose={() => setIsHTPModalOpen(false)} />
-        </Stack>
+            <OnlineModeModal open={isModeModalOpen} onClose={() => setIsModeModalOpen(false)} />
+        </Stack >
     )
 }
 
