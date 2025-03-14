@@ -66,7 +66,7 @@ function HowToModal({ open, onClose }) {
                 </Stack>
             </ModalContent>
         </>,
-        document.getElementById('portal')
+        document.getElementById('howToPlay')
     )
 }
 
