@@ -17,6 +17,7 @@ import CategoriesGame from './pages/CategoriesGame'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import { useVolume } from './contexts/volumeContext'
+import Room from './pages/Room'
 
 function App() {
   const { isDarkMode, setIsDarkMode } = useTheme()
@@ -50,6 +51,7 @@ function App() {
           <Route path='/hard-game' element={<HardGame />} />
           <Route path='/categories-game' element={<CategoriesGame />} />
           <Route path='/gameover' element={<Score />} />
+          <Route path='/room/:roomCode' element={<Room />} />
         </Routes>
       </Stack>
     </ ThemeProvider >
