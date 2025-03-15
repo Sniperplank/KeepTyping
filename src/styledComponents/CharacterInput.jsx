@@ -1,10 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Box } from '@mui/material'
 import { StyledInput } from './StyledInput'
+import typingsound from '../sounds/typingsound.mp3'
+import { useVolume } from '../contexts/volumeContext'
 
 const CharacterInput = ({ length, onChange, onKeyDown, value = '' }) => {
     const [chars, setChars] = useState(Array(length).fill(''))
     const inputRefs = useRef([])
+    const typingAudioRef = useRef(null)
+    const { isVolumeOn, setIsVolumeOn } = useVolume()
+
+    useEffect(() => {
+        const typingAudio = new Audio(typingsound)
+        typingAudio.preload = 'auto'
+        typingAudioRef.current = typingAudio
+        return () => {
+            if (typingAudioRef.current) {
+                typingAudioRef.current.pause()
+                typingAudioRef.current = null
+            }
+        }
+    }, [])
 
     // Initialize refs array
     useEffect(() => {
@@ -42,6 +58,14 @@ const CharacterInput = ({ length, onChange, onKeyDown, value = '' }) => {
     }
 
     const handleKeyDown = (index, e) => {
+        // Play sound only for alphanumeric keys (letters and numbers)
+        const isAlphanumeric = /^[a-zA-Z0-9]$/.test(e.key)
+
+        if (isAlphanumeric && typingAudioRef.current && isVolumeOn) {
+            typingAudioRef.current.currentTime = 0
+            typingAudioRef.current.play().catch(e => console.error("Error playing 'typing' audio:", e))
+        }
+
         // Move to previous input on backspace if current is empty
         if (e.key === 'Backspace' && !chars[index] && index > 0) {
             inputRefs.current[index - 1].focus()
@@ -62,7 +86,7 @@ const CharacterInput = ({ length, onChange, onKeyDown, value = '' }) => {
     }
 
     return (
-        <Box sx={{ display: 'flex', gap: 2, width: '100%', justifyContent: 'center'}}>
+        <Box sx={{ display: 'flex', gap: 2, width: '100%', justifyContent: 'center' }}>
             {Array.from({ length }).map((_, index) => (
                 <StyledInput
                     key={index}

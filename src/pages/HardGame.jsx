@@ -1,10 +1,14 @@
 import { Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { StyledButton } from '../styledComponents/StyledButton'
 import { StyledInput } from '../styledComponents/StyledInput'
 import { useWordList } from '../contexts/wordListContext'
 import { useNavigate } from 'react-router-dom'
 import CharacterInput from '../styledComponents/CharacterInput'
+import { useVolume } from '../contexts/volumeContext'
+import typingsound from '../sounds/typingsound.mp3'
+import correctsound from '../sounds/correct.mp3'
+import wrongsound from '../sounds/wrong.mp3'
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const time = 6
@@ -19,6 +23,11 @@ function HardGame() {
     const { wordList, setWordList } = useWordList()
     const navigate = useNavigate()
     const [wordLength, setWordLength] = useState()
+    const { isVolumeOn, setIsVolumeOn } = useVolume()
+
+    const typingAudioRef = useRef(null)
+    const correctAudioRef = useRef(null)
+    const wrongAudioRef = useRef(null)
 
     useEffect(() => {
         setLetter(letters[Math.floor(Math.random() * letters.length)])
@@ -27,6 +36,34 @@ function HardGame() {
         setUsedWords([])
         setError('')
         setTimeLeft(time)
+
+        // Create and load the audio elements
+        const typingAudio = new Audio(typingsound)
+        typingAudio.preload = 'auto'
+        typingAudioRef.current = typingAudio
+
+        const correctAudio = new Audio(correctsound)
+        correctAudio.preload = 'auto'
+        correctAudioRef.current = correctAudio
+
+        const wrongAudio = new Audio(wrongsound)
+        wrongAudio.preload = 'auto'
+        wrongAudioRef.current = wrongAudio
+
+        return () => {
+            if (typingAudioRef.current) {
+                typingAudioRef.current.pause()
+                typingAudioRef.current = null
+            }
+            if (correctAudioRef.current) {
+                correctAudioRef.current.pause()
+                correctAudioRef.current = null
+            }
+            if (wrongAudioRef.current) {
+                wrongAudioRef.current.pause()
+                wrongAudioRef.current = null
+            }
+        }
     }, [])
 
     useEffect(() => {
@@ -49,12 +86,24 @@ function HardGame() {
     }
 
     const handleWordSubmit = event => {
+        // Play sound only for alphanumeric keys (letters and numbers)
+        const isAlphanumeric = /^[a-zA-Z0-9]$/.test(event.key)
+
+        if (isAlphanumeric && typingAudioRef.current && isVolumeOn) {
+            typingAudioRef.current.currentTime = 0
+            typingAudioRef.current.play().catch(e => console.error("Error playing 'typing' audio:", e))
+        }
+
         if (event.keyCode === 13) { // Enter key was pressed
             if (inputWord.length === wordLength) {
                 if (wordList.includes(inputWord.toUpperCase())) {
                     if (inputWord.charAt(0).toUpperCase() == letter) {
                         if (usedWords.includes(inputWord)) {
                             setError('Already used this word!')
+                            if (wrongAudioRef.current && isVolumeOn) {
+                                wrongAudioRef.current.currentTime = 0
+                                wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                            }
                             return
                         }
                         setError('')
@@ -64,14 +113,30 @@ function HardGame() {
                         setTimeLeft(time)
                         setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
                         setWordLength(Math.floor(Math.random() * (6 - 3 + 1)) + 3)
+                        if (correctAudioRef.current && isVolumeOn) {
+                            correctAudioRef.current.currentTime = 0
+                            correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
+                        }
                     } else {
                         setError('Word must start with ' + letter)
+                        if (wrongAudioRef.current && isVolumeOn) {
+                            wrongAudioRef.current.currentTime = 0
+                            wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                        }
                     }
                 } else {
                     setError('Not a word :/')
+                    if (wrongAudioRef.current && isVolumeOn) {
+                        wrongAudioRef.current.currentTime = 0
+                        wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                    }
                 }
             } else {
                 setError(`Word must be ${wordLength} letters long!`)
+                if (wrongAudioRef.current && isVolumeOn) {
+                    wrongAudioRef.current.currentTime = 0
+                    wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                }
             }
         }
     }
