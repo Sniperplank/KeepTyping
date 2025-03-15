@@ -29,7 +29,7 @@ function Room() {
         const handleStartGame = (gameMode) => {
             console.log(`Game started in ${gameMode} mode!`)
             const path = gameMode === 'quick' ? '/quick-game' : '/hard-game'
-            // navigate(path)
+            navigate(path)
         }
 
         const handleWaiting = (message) => {
@@ -69,7 +69,7 @@ function Room() {
         }
     }, [roomCode, searchParams])
 
-    const copyToClipboard = (url) => {
+    const copyToClipboard = () => {
         navigator.clipboard.writeText(url)
             .then(() => {
                 setCopyConfirmation('Invite link copied to clipboard!')
