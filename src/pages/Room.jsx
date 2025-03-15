@@ -1,5 +1,5 @@
 import React from 'react'
-import { CircularProgress, Stack, Typography } from '@mui/material'
+import { Button, CircularProgress, Stack, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { StyledButton } from '../styledComponents/StyledButton'
@@ -15,6 +15,7 @@ function Room() {
     const [status, setStatus] = useState("")
     const [countdown, setCountdown] = useState(null)
     const [copyConfirmation, setCopyConfirmation] = useState("")
+    const [showLink, setShowLink] = useState(false)
     const url = `http://localhost:5173/room/${roomCode}?mode=${mode}`
 
     useEffect(() => {
@@ -100,6 +101,8 @@ function Room() {
                         <ContentCopyIcon color='primary' sx={{ alignSelf: 'center' }} />
                     </Stack>
                     <Typography variant='body1' color='primary'>{copyConfirmation}</Typography>
+                    <Button sx={{ width: '20%', alignSelf: 'center' }} onClick={() => { setShowLink(prev => !prev) }}>{showLink ? 'Hide Link' : 'Show Link'}</Button>
+                    <Typography variant='body1' sx={{ display: showLink ? 'flex' : 'none', alignSelf: 'center' }}>{url}</Typography>
                 </Stack>
             )}
             <Typography variant="h5">Game Mode: <strong>{mode.toUpperCase()}</strong></Typography>
