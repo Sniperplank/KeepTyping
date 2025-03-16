@@ -1,13 +1,16 @@
 import { Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { StyledButton } from '../styledComponents/StyledButton'
 import { StyledInput } from '../styledComponents/StyledInput'
-import { useWordList } from '../contexts/wordListContext'
 import { useNavigate } from 'react-router-dom'
 import { useAnimalList } from '../contexts/animalsListContext'
 import { useCountryList } from '../contexts/countriesListContext'
 import { usePlantList } from '../contexts/plantsListContext'
 import { useColorList } from '../contexts/colorsListContext'
+import typingsound from '../sounds/typingsound.mp3'
+import correctsound from '../sounds/correct.mp3'
+import wrongsound from '../sounds/wrong.mp3'
+import { useVolume } from '../contexts/volumeContext'
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const time = 10
@@ -20,13 +23,17 @@ function CategoriesGame() {
     const [letter, setLetter] = useState('')
     const [inputWord, setInputWord] = useState("")
     const [error, setError] = useState('')
-    // const { wordList, setWordList } = useWordList()
     const { animalsList, setAnimalsList } = useAnimalList()
     const { countriesList, setCountriesList } = useCountryList()
     const { plantsList, setPlantsList } = usePlantList()
     const { colorsList, setColorsList } = useColorList()
     const [chosenCategory, setChosenCategory] = useState('')
     const navigate = useNavigate()
+    const { isVolumeOn, setIsVolumeOn } = useVolume()
+
+    const typingAudioRef = useRef(null)
+    const correctAudioRef = useRef(null)
+    const wrongAudioRef = useRef(null)
 
     useEffect(() => {
         setLetter(letters[Math.floor(Math.random() * letters.length)])
@@ -35,6 +42,34 @@ function CategoriesGame() {
         setUsedWords([])
         setError('')
         setTimeLeft(time)
+
+        // Create and load the audio elements
+        const typingAudio = new Audio(typingsound)
+        typingAudio.preload = 'auto'
+        typingAudioRef.current = typingAudio
+
+        const correctAudio = new Audio(correctsound)
+        correctAudio.preload = 'auto'
+        correctAudioRef.current = correctAudio
+
+        const wrongAudio = new Audio(wrongsound)
+        wrongAudio.preload = 'auto'
+        wrongAudioRef.current = wrongAudio
+
+        return () => {
+            if (typingAudioRef.current) {
+                typingAudioRef.current.pause()
+                typingAudioRef.current = null
+            }
+            if (correctAudioRef.current) {
+                correctAudioRef.current.pause()
+                correctAudioRef.current = null
+            }
+            if (wrongAudioRef.current) {
+                wrongAudioRef.current.pause()
+                wrongAudioRef.current = null
+            }
+        }
     }, [])
 
     useEffect(() => {
@@ -53,6 +88,14 @@ function CategoriesGame() {
     }, [timeLeft])
 
     const handleWordSubmit = event => {
+        // Play sound only for alphanumeric keys (letters and numbers)
+        const isAlphanumeric = /^[a-zA-Z0-9]$/.test(event.key)
+
+        if (isAlphanumeric && typingAudioRef.current && isVolumeOn) {
+            typingAudioRef.current.currentTime = 0
+            typingAudioRef.current.play().catch(e => console.error("Error playing 'typing' audio:", e))
+        }
+
         if (event.keyCode === 13) { // Enter key was pressed
             switch (chosenCategory.toUpperCase()) {
                 case 'ANIMAL':
@@ -60,6 +103,10 @@ function CategoriesGame() {
                         if (inputWord.toUpperCase().includes(letter)) {
                             if (usedWords.includes(inputWord.toUpperCase())) {
                                 setError('Already used this word!')
+                                if (wrongAudioRef.current && isVolumeOn) {
+                                    wrongAudioRef.current.currentTime = 0
+                                    wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                                }
                                 return
                             }
                             setError('')
@@ -69,11 +116,23 @@ function CategoriesGame() {
                             setTimeLeft(time)
                             setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
                             setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
+                            if (correctAudioRef.current && isVolumeOn) {
+                                correctAudioRef.current.currentTime = 0
+                                correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
+                            }
                         } else {
                             setError('Word must include the letter ' + letter)
+                            if (wrongAudioRef.current && isVolumeOn) {
+                                wrongAudioRef.current.currentTime = 0
+                                wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                            }
                         }
                     } else {
                         setError('Not an animal :/')
+                        if (wrongAudioRef.current && isVolumeOn) {
+                            wrongAudioRef.current.currentTime = 0
+                            wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                        }
                     }
                     break;
                 case 'COUNTRY':
@@ -81,6 +140,10 @@ function CategoriesGame() {
                         if (inputWord.toUpperCase().includes(letter)) {
                             if (usedWords.includes(inputWord.toUpperCase())) {
                                 setError('Already used this word!')
+                                if (wrongAudioRef.current && isVolumeOn) {
+                                    wrongAudioRef.current.currentTime = 0
+                                    wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                                }
                                 return
                             }
                             setError('')
@@ -90,11 +153,23 @@ function CategoriesGame() {
                             setTimeLeft(time)
                             setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
                             setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
+                            if (correctAudioRef.current && isVolumeOn) {
+                                correctAudioRef.current.currentTime = 0
+                                correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
+                            }
                         } else {
                             setError('Word must include the letter ' + letter)
+                            if (wrongAudioRef.current && isVolumeOn) {
+                                wrongAudioRef.current.currentTime = 0
+                                wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                            }
                         }
                     } else {
                         setError('Not a country :/')
+                        if (wrongAudioRef.current && isVolumeOn) {
+                            wrongAudioRef.current.currentTime = 0
+                            wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                        }
                     }
                     break;
                 case 'PLANT':
@@ -102,6 +177,10 @@ function CategoriesGame() {
                         if (inputWord.toUpperCase().includes(letter)) {
                             if (usedWords.includes(inputWord.toUpperCase())) {
                                 setError('Already used this word!')
+                                if (wrongAudioRef.current && isVolumeOn) {
+                                    wrongAudioRef.current.currentTime = 0
+                                    wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                                }
                                 return
                             }
                             setError('')
@@ -111,11 +190,23 @@ function CategoriesGame() {
                             setTimeLeft(time)
                             setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
                             setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
+                            if (correctAudioRef.current && isVolumeOn) {
+                                correctAudioRef.current.currentTime = 0
+                                correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
+                            }
                         } else {
                             setError('Word must include the letter ' + letter)
+                            if (wrongAudioRef.current && isVolumeOn) {
+                                wrongAudioRef.current.currentTime = 0
+                                wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                            }
                         }
                     } else {
                         setError('Not a plant :/')
+                        if (wrongAudioRef.current && isVolumeOn) {
+                            wrongAudioRef.current.currentTime = 0
+                            wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                        }
                     }
                     break;
                 case 'COLOR':
@@ -123,6 +214,10 @@ function CategoriesGame() {
                         if (inputWord.toUpperCase().includes(letter)) {
                             if (usedWords.includes(inputWord.toUpperCase())) {
                                 setError('Already used this word!')
+                                if (wrongAudioRef.current && isVolumeOn) {
+                                    wrongAudioRef.current.currentTime = 0
+                                    wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                                }
                                 return
                             }
                             setError('')
@@ -132,11 +227,23 @@ function CategoriesGame() {
                             setTimeLeft(time)
                             setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
                             setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
+                            if (correctAudioRef.current && isVolumeOn) {
+                                correctAudioRef.current.currentTime = 0
+                                correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
+                            }
                         } else {
                             setError('Word must include the letter ' + letter)
+                            if (wrongAudioRef.current && isVolumeOn) {
+                                wrongAudioRef.current.currentTime = 0
+                                wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                            }
                         }
                     } else {
                         setError('Not a color :/')
+                        if (wrongAudioRef.current && isVolumeOn) {
+                            wrongAudioRef.current.currentTime = 0
+                            wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                        }
                     }
                     break;
                 default:
