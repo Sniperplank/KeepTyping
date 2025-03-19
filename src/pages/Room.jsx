@@ -1,11 +1,21 @@
 import React from 'react'
-import { Button, CircularProgress, Stack, Typography } from '@mui/material'
+import { Avatar, Box, Button, CircularProgress, imageListClasses, Stack, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { StyledButton } from '../styledComponents/StyledButton'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import socket from '../socketService'
-import { StyledIconButton } from '../styledComponents/StyledIconButton'
+import bear from '../sprites/bear.svg'
+import fox from '../sprites/fox.svg'
+import monkey from '../sprites/monkey.svg'
+import zebra from '../sprites/zebra.svg'
+
+const avatarImages = {
+    'Bear': bear,
+    'Fox': fox,
+    'Zebra': zebra,
+    'Monkey': monkey
+}
 
 function Room() {
     const { roomCode } = useParams()
@@ -16,6 +26,8 @@ function Room() {
     const [countdown, setCountdown] = useState(null)
     const [copyConfirmation, setCopyConfirmation] = useState("")
     const [showLink, setShowLink] = useState(false)
+    const [myAvatar, setMyAvatar] = useState(null)
+    const [allAvatars, setAllAvatars] = useState({})
     const url = `http://localhost:5173/room/${roomCode}?mode=${mode}`
 
     useEffect(() => {
@@ -26,9 +38,14 @@ function Room() {
 
         socket.emit("joinRoom", { roomCode })
 
-        const handleStartGame = (gameMode) => {
-            console.log(`Game started in ${gameMode} mode!`)
-            const path = gameMode === 'quick' ? '/quick-game' : '/hard-game'
+        const handleStartGame = (gameData) => {
+            console.log(`Game started in ${gameData.mode} mode!`)
+
+            // Store avatar data in sessionStorage so it's available in the game
+            sessionStorage.setItem('gameAvatars', JSON.stringify(gameData.avatars))
+            sessionStorage.setItem('playerSocketId', socket.id)
+
+            const path = gameData.mode === 'quick' ? '/quick-game' : '/hard-game'
             navigate(path)
         }
 
@@ -50,14 +67,26 @@ function Room() {
             console.error(message)
         }
 
+        const handleAvatarAssigned = (data) => {
+            if (data.playerId === socket.id) {
+                setMyAvatar(data.avatar)
+            }
+        }
+
+        const handleAllAvatars = (avatars) => {
+            setAllAvatars(avatars)
+        }
+
         //clean up any existing listeners before adding new ones
-        socket.off("startGame").off("waiting").off("countdown").off("playerLeft").off("error")
+        socket.off("startGame").off("waiting").off("countdown").off("playerLeft").off("error").off("avatarAssigned").off("allAvatars")
 
         socket.on("startGame", handleStartGame)
         socket.on("waiting", handleWaiting)
         socket.on("countdown", handleCountdown)
         socket.on("playerLeft", handlePlayerLeft)
         socket.on("error", handleError)
+        socket.on("avatarAssigned", handleAvatarAssigned)
+        socket.on("allAvatars", handleAllAvatars)
 
         // Cleanup to prevent multiple listeners
         return () => {
@@ -66,6 +95,8 @@ function Room() {
             socket.off("countdown", handleCountdown)
             socket.off("playerLeft", handlePlayerLeft)
             socket.off("error", handleError)
+            socket.off("avatarAssigned", handleAvatarAssigned)
+            socket.off("allAvatars", handleAllAvatars)
         }
     }, [roomCode, searchParams])
 
@@ -84,17 +115,41 @@ function Room() {
             })
     }
 
+    // Find opponent's avatar
+    const opponentId = Object.keys(allAvatars).find(id => id !== socket.id)
+    const opponentAvatar = opponentId ? allAvatars[opponentId] : null
+
     return (
         <Stack spacing={4}>
             <Typography variant="h2" align="center">{status}</Typography>
             {countdown !== null && (
                 <Stack spacing={2}>
+                    <Stack direction='row' spacing={2} sx={{ alignSelf: 'center' }}>
+                        <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'primary.main', p: 2, borderRadius: 2, height: 150 }}>
+                            <Box component="img" src={avatarImages[myAvatar]} width={120} height={120} />
+                            <Typography variant="h6">You</Typography>
+                        </Stack>
+
+                        {opponentAvatar && (
+                            <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'error.main', p: 2, borderRadius: 2, height: 150 }}>
+                                <Box component="img" src={avatarImages[opponentAvatar]} width={120} height={120} />
+                                <Typography variant="h6">Opponent</Typography>
+                            </Stack>
+                        )}
+                    </Stack>
+
                     <CircularProgress variant="determinate" value={(countdown / 5) * 100} size={120} thickness={4} sx={{ alignSelf: 'center' }} />
                     <Typography variant="h2" color="primary">{countdown}</Typography>
                 </Stack>
             )}
             {countdown === null && (
                 <Stack spacing={3} >
+                    {myAvatar && (
+                        <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'primary.main', p: 2, borderRadius: 2, height: 150 }}>
+                            <Box component="img" src={avatarImages[myAvatar]} width={120} height={120} />
+                            <Typography variant="h6">You</Typography>
+                        </Stack>
+                    )}
                     <Typography variant='h6'>Share this link with someone to challenge them!</Typography>
                     <Stack direction='row' spacing={2} alignSelf='center' sx={{ border: 'solid', p: 2, borderRadius: 4, borderColor: 'primary.main', '&:hover': { cursor: 'pointer' } }} onClick={copyToClipboard}>
                         <Typography variant='h6' sx={{ alignSelf: 'center' }} onClick={copyToClipboard}>Copy Link!</Typography>
@@ -104,10 +159,11 @@ function Room() {
                     <Button sx={{ width: '20%', alignSelf: 'center' }} onClick={() => { setShowLink(prev => !prev) }}>{showLink ? 'Hide Link' : 'Show Link'}</Button>
                     <Typography variant='body1' sx={{ display: showLink ? 'flex' : 'none', alignSelf: 'center' }}>{url}</Typography>
                 </Stack>
-            )}
+            )
+            }
             <Typography variant="h5">Game Mode: <strong>{mode.toUpperCase()}</strong></Typography>
-            <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main', alignSelf: 'center' }} onClick={() => { navigate(-1) }}>Cancel</StyledButton>
-        </Stack>
+            <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main', alignSelf: 'center' }} onClick={() => { navigate('/') }}>Cancel</StyledButton>
+        </Stack >
     )
 }
 
