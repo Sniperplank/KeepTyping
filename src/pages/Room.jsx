@@ -39,13 +39,11 @@ function Room() {
         socket.emit("joinRoom", { roomCode })
 
         const handleStartGame = (gameData) => {
-            console.log(`Game started in ${gameData.mode} mode!`)
-
-            // Store avatar data in sessionStorage so it's available in the game
             sessionStorage.setItem('gameAvatars', JSON.stringify(gameData.avatars))
             sessionStorage.setItem('playerSocketId', socket.id)
+            sessionStorage.setItem('roomCode', roomCode)
 
-            const path = gameData.mode === 'quick' ? '/quick-game' : '/hard-game'
+            const path = gameData.mode === 'quick' ? '/quick-match' : '/hard-match'
             navigate(path)
         }
 

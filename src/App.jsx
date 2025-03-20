@@ -18,6 +18,9 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import { useVolume } from './contexts/volumeContext'
 import Room from './pages/Room'
+import OnlineQuickGame from './pages/OnlineQuickGame'
+import OnlineHardGame from './pages/OnlineHardGame'
+import OnlineScore from './pages/OnlineScore'
 
 function App() {
   const { isDarkMode, setIsDarkMode } = useTheme()
@@ -52,6 +55,9 @@ function App() {
           <Route path='/categories-game' element={<CategoriesGame />} />
           <Route path='/gameover' element={<Score />} />
           <Route path='/room/:roomCode' element={<Room />} />
+          <Route path='/quick-match' element={<OnlineQuickGame />} />
+          <Route path='/hard-match' element={<OnlineHardGame />} />
+          <Route path='/match-over' element={<OnlineScore />} />
         </Routes>
       </Stack>
     </ ThemeProvider >
