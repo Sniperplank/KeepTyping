@@ -25,6 +25,7 @@ function Room() {
     const [status, setStatus] = useState("")
     const [countdown, setCountdown] = useState(null)
     const [copyConfirmation, setCopyConfirmation] = useState("")
+    const [copyLinkText, setCopyLinkText] = useState("Copy Link")
     const [showLink, setShowLink] = useState(false)
     const [myAvatar, setMyAvatar] = useState(null)
     const [allAvatars, setAllAvatars] = useState({})
@@ -101,16 +102,21 @@ function Room() {
     const copyToClipboard = () => {
         navigator.clipboard.writeText(url)
             .then(() => {
-                setCopyConfirmation('Invite link copied to clipboard!')
+                setCopyLinkText('COPIED!')
                 const timer = setTimeout(() => {
-                    setCopyConfirmation('')
-                }, 2000)
+                    setCopyLinkText('Copy Link')
+                }, 1000)
                 return () => clearTimeout(timer)
             })
             .catch((err) => {
                 console.error('Failed to copy:', err)
                 setCopyConfirmation('Failed to copy invite link.')
             })
+    }
+
+    const handleLeaveRoom = () => {
+        socket.disconnect()
+        navigate('/')
     }
 
     // Find opponent's avatar
@@ -150,7 +156,7 @@ function Room() {
                     )}
                     <Typography variant='h6'>Share this link with someone to challenge them!</Typography>
                     <Stack direction='row' spacing={2} alignSelf='center' sx={{ border: 'solid', p: 2, borderRadius: 4, borderColor: 'primary.main', '&:hover': { cursor: 'pointer' } }} onClick={copyToClipboard}>
-                        <Typography variant='h6' sx={{ alignSelf: 'center' }} onClick={copyToClipboard}>Copy Link!</Typography>
+                        <Typography variant='h6' sx={{ alignSelf: 'center' }} onClick={copyToClipboard}>{copyLinkText}</Typography>
                         <ContentCopyIcon color='primary' sx={{ alignSelf: 'center' }} />
                     </Stack>
                     <Typography variant='body1' color='primary'>{copyConfirmation}</Typography>
@@ -160,7 +166,7 @@ function Room() {
             )
             }
             <Typography variant="h5">Game Mode: <strong>{mode.toUpperCase()}</strong></Typography>
-            <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main', alignSelf: 'center' }} onClick={() => { navigate('/') }}>Cancel</StyledButton>
+            <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main', alignSelf: 'center' }} onClick={handleLeaveRoom}>Cancel</StyledButton>
         </Stack >
     )
 }
