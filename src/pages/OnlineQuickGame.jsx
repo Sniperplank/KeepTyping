@@ -155,7 +155,7 @@ function OnlineQuickGame() {
                     setMyScore(newScore)
                     const roomCode = sessionStorage.getItem('roomCode');
                     if (roomCode) {
-                        socket.emit("updateScore", { roomCode, score: newScore });
+                        socket.emit("updateScore", { roomCode, score: newScore })
                     }
                     setInputWord('')
                     setTimeLeft(time)
