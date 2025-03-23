@@ -17,5 +17,4 @@ socket.on('connect', () => {
     console.log('Connected to server with ID:', socket.id)
 })
 
-// Export the socket instance
-export default socket;
+export default socket
