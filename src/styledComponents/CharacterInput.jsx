@@ -4,7 +4,7 @@ import { StyledInput } from './StyledInput'
 import typingsound from '../sounds/typingsound.mp3'
 import { useVolume } from '../contexts/volumeContext'
 
-const CharacterInput = ({ length, onChange, onKeyDown, value = '' }) => {
+const CharacterInput = ({ length, onChange, onKeyDown, value = '', disabled = false }) => {
     const [chars, setChars] = useState(Array(length).fill(''))
     const inputRefs = useRef([])
     const typingAudioRef = useRef(null)
@@ -105,6 +105,7 @@ const CharacterInput = ({ length, onChange, onKeyDown, value = '' }) => {
                             fontWeight: 'bold'
                         }
                     }}
+                    disabled={disabled}
                     autoComplete="off"
                     autoCorrect="off"
                     autoCapitalize="off"
