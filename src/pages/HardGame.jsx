@@ -1,7 +1,6 @@
 import { Stack, Typography } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import { StyledButton } from '../styledComponents/StyledButton'
-import { StyledInput } from '../styledComponents/StyledInput'
 import { useWordList } from '../contexts/wordListContext'
 import { useNavigate } from 'react-router-dom'
 import CharacterInput from '../styledComponents/CharacterInput'

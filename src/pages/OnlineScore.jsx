@@ -16,7 +16,7 @@ const avatarImages = {
 
 function OnlineScore() {
     const location = useLocation()
-    const { myScore, opponentScore, timeoutPlayer, myAvatar, opponentAvatar } = location.state || {}
+    const { myScore, opponentScore, timeoutPlayer, myAvatar, opponentAvatar, mode } = location.state || {}
     const mySocketId = sessionStorage.getItem('playerSocketId')
     const iLostOnTimeout = timeoutPlayer === mySocketId
     const navigate = useNavigate()
@@ -27,24 +27,28 @@ function OnlineScore() {
                 <Typography variant="h2" align="center" color={iLostOnTimeout ? 'error' : 'primary'}>{iLostOnTimeout ? 'Game Over!' : 'You Win!'}</Typography>
 
                 <Typography variant="h6" align="center">{iLostOnTimeout ? 'You ran out of time!' : 'Your opponent ran out of time!'}</Typography>
-
-                <Typography variant="h4" align="center">Final Scores</Typography>
-                <Stack direction="row" spacing={10} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                {
+                    mode === "Turn-based" ||
                     <Stack>
-                        <Typography variant="h4">You</Typography>
-                        <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'primary.main', p: 2, borderRadius: 2, height: 150 }}>
-                            <Box component="img" src={avatarImages[myAvatar]} width={120} height={120} />
-                            <Typography variant="h4">{myScore}</Typography>
+                        <Typography variant="h4" align="center">Final Scores</Typography>
+                        <Stack direction="row" spacing={10} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <Stack>
+                                <Typography variant="h4">You</Typography>
+                                <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'primary.main', p: 2, borderRadius: 2, height: 150 }}>
+                                    <Box component="img" src={avatarImages[myAvatar]} width={120} height={120} />
+                                    <Typography variant="h4">{myScore}</Typography>
+                                </Stack>
+                            </Stack>
+                            <Stack>
+                                <Typography variant="h4">Opponent</Typography>
+                                <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'error.main', p: 2, borderRadius: 2, height: 150 }}>
+                                    <Box component="img" src={avatarImages[opponentAvatar]} width={120} height={120} />
+                                    <Typography variant="h4">{opponentScore}</Typography>
+                                </Stack>
+                            </Stack>
                         </Stack>
                     </Stack>
-                    <Stack>
-                        <Typography variant="h4">Opponent</Typography>
-                        <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'error.main', p: 2, borderRadius: 2, height: 150 }}>
-                            <Box component="img" src={avatarImages[opponentAvatar]} width={120} height={120} />
-                            <Typography variant="h4">{opponentScore}</Typography>
-                        </Stack>
-                    </Stack>
-                </Stack>
+                }
 
                 <StyledButton color='primary' variant='contained' sx={{ width: 1 / 3, alignSelf: 'center' }} onClick={() => { navigate('/') }}>Home</StyledButton>
             </Stack>
