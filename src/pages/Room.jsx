@@ -44,8 +44,10 @@ function Room() {
             sessionStorage.setItem('playerSocketId', socket.id)
             sessionStorage.setItem('roomCode', roomCode)
 
+            const myTurn = gameData.firstPlayerId === socket.id
+
             const path = gameData.mode === 'quick' ? '/quick-match' : '/hard-match'
-            navigate(path)
+            navigate(path, { state: { isItMyTurn: myTurn } })
         }
 
         const handleWaiting = (message) => {
