@@ -36,6 +36,7 @@ function OnlineQuickGame() {
     const { isVolumeOn, setIsVolumeOn } = useVolume()
     const [myAvatar, setMyAvatar] = useState("")
     const [opponentAvatar, setOpponentAvatar] = useState("")
+    const [roomCode, setRoomCode] = useState(sessionStorage.getItem('roomCode'))
 
     const typingAudioRef = useRef(null)
     const correctAudioRef = useRef(null)
@@ -98,6 +99,7 @@ function OnlineQuickGame() {
             }, 1000)
         } else {
             const roomCode = sessionStorage.getItem('roomCode')
+            setRoomCode(roomCode)
             if (roomCode) {
                 socket.emit("playerTimeout", {
                     roomCode,
@@ -117,14 +119,16 @@ function OnlineQuickGame() {
         socket.on("opponentScoreUpdate", (score) => {
             setOpponentScore(score)
         })
-        // socket.on("playerLeft", handlePlayerLeft)
+        socket.on("playerLeft", () => {
+            navigate('/match-over', { state: { otherPlayerLeft: true } })
+        })
         socket.on("gameOver", (data) => {
             navigate('/match-over', { state: { myScore: myScore, opponentScore: opponentScore, myAvatar: myAvatar, opponentAvatar: opponentAvatar, timeoutPlayer: data.timeoutPlayer } }) // Time ran out
         })
 
         return () => {
             socket.off("opponentScoreUpdate")
-            // socket.off("playerLeft", handlePlayerLeft)
+            socket.off("playerLeft")
             socket.off("gameOver")
         }
     }, [myScore, opponentScore, navigate])
@@ -181,6 +185,11 @@ function OnlineQuickGame() {
         }
     }
 
+    const handleLeaveRoom = () => {
+        socket.emit("leaveRoom", { roomCode })
+        navigate('/')
+    }
+
     return (
         <Stack spacing={{ xs: 5, sm: 10 }} direction='row' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'primary.main', p: 2, borderRadius: 2, height: 150 }}>
@@ -194,7 +203,7 @@ function OnlineQuickGame() {
                 </Stack>
                 <StyledInput type="text" value={inputWord} InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onChange={e => setInputWord(e.target.value)} onKeyDown={handleWordSubmit} inputProps={{ style: { fontSize: 40 }, autoComplete: 'off' }} />
                 <Typography variant='h6' color='red'>{error}</Typography>
-                <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main' }} onClick={() => { navigate('/') }}>Leave</StyledButton>
+                <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main' }} onClick={handleLeaveRoom}>Leave</StyledButton>
                 <p className='timer'>{timeLeft}</p>
             </Stack>
             <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'error.main', p: 2, borderRadius: 2, height: 150 }}>

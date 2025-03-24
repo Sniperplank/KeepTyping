@@ -16,7 +16,7 @@ const avatarImages = {
 
 function OnlineScore() {
     const location = useLocation()
-    const { myScore, opponentScore, timeoutPlayer, myAvatar, opponentAvatar, mode } = location.state || {}
+    const { myScore, opponentScore, timeoutPlayer, myAvatar, opponentAvatar, mode, otherPlayerLeft } = location.state || {}
     const mySocketId = sessionStorage.getItem('playerSocketId')
     const iLostOnTimeout = timeoutPlayer === mySocketId
     const navigate = useNavigate()
@@ -24,9 +24,9 @@ function OnlineScore() {
     return (
         <Stack spacing={{ xs: 5, sm: 10 }} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Stack spacing={4}>
-                <Typography variant="h2" align="center" color={iLostOnTimeout ? 'error' : 'primary'}>{iLostOnTimeout ? 'Game Over!' : 'You Win!'}</Typography>
+                <Typography variant="h2" align="center" color={iLostOnTimeout ? 'error' : 'primary'}>{!iLostOnTimeout || otherPlayerLeft ? 'You Win!' : 'Game Over!'}</Typography>
 
-                <Typography variant="h6" align="center">{iLostOnTimeout ? 'You ran out of time!' : 'Your opponent ran out of time!'}</Typography>
+                <Typography variant="h6" align="center">{otherPlayerLeft ? 'Your opponent left the game!' : iLostOnTimeout ? 'You ran out of time!' : 'Your opponent ran out of time!'}</Typography>
                 {
                     mode === "Turn-based" ||
                     <Stack>

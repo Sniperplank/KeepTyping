@@ -40,6 +40,7 @@ function OnlineHardGame() {
   const [myTurn, setMyTurn] = useState(isItMyTurn)
   const [myAvatar, setMyAvatar] = useState("")
   const [opponentAvatar, setOpponentAvatar] = useState("")
+  const [roomCode, setRoomCode] = useState(sessionStorage.getItem("roomCode"))
 
   const typingAudioRef = useRef(null)
   const correctAudioRef = useRef(null)
@@ -103,6 +104,7 @@ function OnlineHardGame() {
       }, 1000)
     } else {
       const roomCode = sessionStorage.getItem('roomCode')
+      setRoomCode(roomCode)
       if (roomCode) {
         socket.emit("playerTimeout", {
           roomCode,
@@ -122,7 +124,9 @@ function OnlineHardGame() {
     socket.on("opponentScoreUpdate", (score) => {
       setOpponentScore(score)
     })
-    // socket.on("playerLeft", handlePlayerLeft)
+    socket.on("playerLeft", () => {
+      navigate('/match-over', { state: { otherPlayerLeft: true, mode: "Turn-based" } })
+    })
     socket.on("gameOver", (data) => {
       navigate('/match-over', { state: { timeoutPlayer: data.timeoutPlayer, mode: "Turn-based" } }) // Time ran out
     })
@@ -135,7 +139,7 @@ function OnlineHardGame() {
 
     return () => {
       socket.off("opponentScoreUpdate")
-      // socket.off("playerLeft", handlePlayerLeft)
+      socket.off("playerLeft")
       socket.off("gameOver")
       socket.off("yourTurn")
     }
@@ -211,6 +215,11 @@ function OnlineHardGame() {
     }
   }
 
+  const handleLeaveRoom = () => {
+    socket.emit("leaveRoom", { roomCode })
+    navigate('/')
+  }
+
   return (
     <Stack spacing={{ xs: 5, sm: 10 }} direction='row' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'primary.main', p: 2, borderRadius: 2, height: 150 }}>
@@ -226,7 +235,7 @@ function OnlineHardGame() {
         <Typography variant='h2' color='primary'>{letter}</Typography>
         <CharacterInput length={wordLength} value={inputWord} onChange={handleWordChange} onKeyDown={handleWordSubmit} disabled={!myTurn} />
         <Typography variant='h5' color='red'>{error}</Typography>
-        <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main' }} onClick={() => { navigate(-1) }}>Back</StyledButton>
+        <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main' }} onClick={handleLeaveRoom}>Leave</StyledButton>
         <p className='timer'>{timeLeft}</p>
       </Stack>
       <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'error.main', p: 2, borderRadius: 2, height: 150 }}>
