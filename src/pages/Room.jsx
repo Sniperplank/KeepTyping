@@ -29,6 +29,7 @@ function Room() {
     const [showLink, setShowLink] = useState(false)
     const [myAvatar, setMyAvatar] = useState(null)
     const [allAvatars, setAllAvatars] = useState({})
+    const [error, setError] = useState("")
     // const url = `http://localhost:5173/room/${roomCode}?mode=${mode}`
     const url = `https://keep-typing.vercel.app/room/${roomCode}?mode=${mode}`
 
@@ -66,7 +67,7 @@ function Room() {
         }
 
         const handleError = (message) => {
-            console.error(message)
+            setError(message)
         }
 
         const handleAvatarAssigned = (data) => {
@@ -118,7 +119,7 @@ function Room() {
     }
 
     const handleLeaveRoom = () => {
-        socket.disconnect()
+        socket.emit("leaveRoom", { roomCode })
         navigate('/')
     }
 
@@ -128,8 +129,8 @@ function Room() {
 
     return (
         <Stack spacing={4}>
-            <Typography variant="h2" align="center">{status}</Typography>
-            {countdown !== null && (
+            <Typography variant="h2" align="center">{status !== "" ? status : error}</Typography>
+            {countdown !== null && !error && (
                 <Stack spacing={2}>
                     <Stack direction='row' spacing={2} sx={{ alignSelf: 'center' }}>
                         <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'primary.main', p: 2, borderRadius: 2, height: 150 }}>
@@ -149,7 +150,7 @@ function Room() {
                     <Typography variant="h2" color="primary">{countdown}</Typography>
                 </Stack>
             )}
-            {countdown === null && (
+            {countdown === null && !error && (
                 <Stack spacing={3} >
                     {myAvatar && (
                         <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'primary.main', p: 2, borderRadius: 2, height: 150 }}>
@@ -168,7 +169,7 @@ function Room() {
                 </Stack>
             )
             }
-            <Typography variant="h5">Game Mode: <strong>{mode.toUpperCase()}</strong></Typography>
+            {!error && <Typography variant="h5">Game Mode: <strong>{mode.toUpperCase()}</strong></Typography>}
             <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main', alignSelf: 'center' }} onClick={handleLeaveRoom}>Cancel</StyledButton>
         </Stack >
     )
