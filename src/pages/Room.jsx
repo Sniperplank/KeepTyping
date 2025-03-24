@@ -29,7 +29,8 @@ function Room() {
     const [showLink, setShowLink] = useState(false)
     const [myAvatar, setMyAvatar] = useState(null)
     const [allAvatars, setAllAvatars] = useState({})
-    const url = `http://localhost:5173/room/${roomCode}?mode=${mode}`
+    // const url = `http://localhost:5173/room/${roomCode}?mode=${mode}`
+    const url = `https://keep-typing.vercel.app/room/${roomCode}?mode=${mode}`
 
     useEffect(() => {
         if (!roomCode) return  // Prevents undefined room codes
