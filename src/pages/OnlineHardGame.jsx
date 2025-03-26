@@ -13,19 +13,27 @@ import bear from '../sprites/bear.svg'
 import fox from '../sprites/fox.svg'
 import monkey from '../sprites/monkey.svg'
 import zebra from '../sprites/zebra.svg'
+import racoon from '../sprites/racoon.svg'
+import horse from '../sprites/horse.svg'
+import moose from '../sprites/moose.svg'
+import elephant from '../sprites/elephant.svg'
 
 const avatarImages = {
   'Bear': bear,
   'Fox': fox,
   'Zebra': zebra,
-  'Monkey': monkey
+  'Racoon': racoon,
+  'Horse': horse,
+  'Moose': moose,
+  'Elephant': elephant,
+  'Monkey': monkey,
 }
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const time = 6
 
 function OnlineHardGame() {
   const location = useLocation()
-  const isItMyTurn = location.state.isItMyTurn
+  const { isItMyTurn, startingLetter, startingWordLength } = location.state
   const [usedWords, setUsedWords] = useState([])
   const [timeLeft, setTimeLeft] = useState(time)
   const [myScore, setMyScore] = useState(0)
@@ -60,8 +68,8 @@ function OnlineHardGame() {
   }, [])
 
   useEffect(() => {
-    setLetter(letters[Math.floor(Math.random() * letters.length)])
-    setWordLength(Math.floor(Math.random() * (6 - 3 + 1)) + 3)
+    setLetter(startingLetter)
+    setWordLength(startingWordLength)
     setMyScore(0)
     setUsedWords([])
     setError('')
@@ -105,7 +113,7 @@ function OnlineHardGame() {
     } else {
       const roomCode = sessionStorage.getItem('roomCode')
       setRoomCode(roomCode)
-      if (roomCode) {
+      if (roomCode && myTurn) {
         socket.emit("playerTimeout", {
           roomCode,
           finalScore: myScore,
@@ -186,6 +194,7 @@ function OnlineHardGame() {
             setInputWord('')
             setLetter(nextLetter)
             setWordLength(nextWordLength)
+            setTimeLeft(time)
             setMyTurn(false)
             if (correctAudioRef.current && isVolumeOn) {
               correctAudioRef.current.currentTime = 0
