@@ -9,12 +9,20 @@ import bear from '../sprites/bear.svg'
 import fox from '../sprites/fox.svg'
 import monkey from '../sprites/monkey.svg'
 import zebra from '../sprites/zebra.svg'
+import racoon from '../sprites/racoon.svg'
+import horse from '../sprites/horse.svg'
+import moose from '../sprites/moose.svg'
+import elephant from '../sprites/elephant.svg'
 
 const avatarImages = {
     'Bear': bear,
     'Fox': fox,
     'Zebra': zebra,
-    'Monkey': monkey
+    'Racoon': racoon,
+    'Horse': horse,
+    'Moose': moose,
+    'Elephant': elephant,
+    'Monkey': monkey,
 }
 
 function Room() {
@@ -49,7 +57,7 @@ function Room() {
             const myTurn = gameData.firstPlayerId === socket.id
 
             const path = gameData.mode === 'quick' ? '/quick-match' : '/hard-match'
-            navigate(path, { state: { isItMyTurn: myTurn } })
+            navigate(path, { state: { isItMyTurn: myTurn, startingLetter: gameData.startingLetter, startingWordLength: gameData.startingWordLength } })
         }
 
         const handleWaiting = (message) => {

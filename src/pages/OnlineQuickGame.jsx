@@ -13,12 +13,20 @@ import bear from '../sprites/bear.svg'
 import fox from '../sprites/fox.svg'
 import monkey from '../sprites/monkey.svg'
 import zebra from '../sprites/zebra.svg'
+import racoon from '../sprites/racoon.svg'
+import horse from '../sprites/horse.svg'
+import moose from '../sprites/moose.svg'
+import elephant from '../sprites/elephant.svg'
 
 const avatarImages = {
     'Bear': bear,
     'Fox': fox,
     'Zebra': zebra,
-    'Monkey': monkey
+    'Racoon': racoon,
+    'Horse': horse,
+    'Moose': moose,
+    'Elephant': elephant,
+    'Monkey': monkey,
 }
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const time = 4
