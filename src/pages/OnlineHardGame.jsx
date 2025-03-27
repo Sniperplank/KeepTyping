@@ -133,10 +133,10 @@ function OnlineHardGame() {
       setOpponentScore(score)
     })
     socket.on("playerLeft", () => {
-      navigate('/match-over', { state: { otherPlayerLeft: true, mode: "Turn-based" } })
+      navigate('/match-over', { state: { otherPlayerLeft: true, mode: "turn-based", prevRoomCode: roomCode } })
     })
     socket.on("gameOver", (data) => {
-      navigate('/match-over', { state: { timeoutPlayer: data.timeoutPlayer, mode: "Turn-based" } }) // Time ran out
+      navigate('/match-over', { state: { timeoutPlayer: data.timeoutPlayer, mode: "turn-based", prevRoomCode: roomCode } }) // Time ran out
     })
     socket.on("yourTurn", (data) => {
       setMyTurn(true)

@@ -128,10 +128,10 @@ function OnlineQuickGame() {
             setOpponentScore(score)
         })
         socket.on("playerLeft", () => {
-            navigate('/match-over', { state: { otherPlayerLeft: true } })
+            navigate('/match-over', { state: { otherPlayerLeft: true, mode: 'quick', prevRoomCode: roomCode } })
         })
         socket.on("gameOver", (data) => {
-            navigate('/match-over', { state: { myScore: myScore, opponentScore: opponentScore, myAvatar: myAvatar, opponentAvatar: opponentAvatar, timeoutPlayer: data.timeoutPlayer } }) // Time ran out
+            navigate('/match-over', { state: { myScore: myScore, opponentScore: opponentScore, myAvatar: myAvatar, opponentAvatar: opponentAvatar, timeoutPlayer: data.timeoutPlayer, mode: 'quick', prevRoomCode: roomCode } }) // Time ran out
         })
 
         return () => {

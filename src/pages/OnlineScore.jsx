@@ -1,7 +1,9 @@
 import { Box, Stack, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyledButton } from '../styledComponents/StyledButton'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
+import socket from '../socketService'
 import bear from '../sprites/bear.svg'
 import fox from '../sprites/fox.svg'
 import monkey from '../sprites/monkey.svg'
@@ -24,10 +26,37 @@ const avatarImages = {
 
 function OnlineScore() {
     const location = useLocation()
-    const { myScore, opponentScore, timeoutPlayer, myAvatar, opponentAvatar, mode, otherPlayerLeft } = location.state || {}
+    const { myScore, opponentScore, timeoutPlayer, myAvatar, opponentAvatar, mode, otherPlayerLeft, prevRoomCode } = location.state || {}
     const mySocketId = sessionStorage.getItem('playerSocketId')
     const iLostOnTimeout = timeoutPlayer === mySocketId
     const navigate = useNavigate()
+    const [wantsRematch, setWantsRematch] = useState(false)
+    const roomCode = uuidv4()
+    const [rematchRoomCode, setRematchRoomCode] = useState('')
+    const [rematchMode, setRematchMode] = useState('')
+    const [wantsRematchMessage, setWantsRematchMessage] = useState('')
+
+    const handleRematch = () => {
+        if (wantsRematch) {
+            navigate(`/room/${rematchRoomCode}?mode=${rematchMode}`)
+        } else {
+            socket.emit("createRoom", { roomCode, mode, prevRoomCode })
+            navigate(`/room/${roomCode}?mode=${mode}`)
+        }
+    }
+
+    useEffect(() => {
+        socket.on("wantsRematch", (data) => {
+            setWantsRematch(true)
+            setRematchRoomCode(data.roomCode)
+            setRematchMode(data.mode)
+            setWantsRematchMessage("Your opponent wants a rematch!")
+        })
+
+        return () => {
+            socket.off("wantsRematch")
+        }
+    }, [navigate])
 
     return (
         <Stack spacing={{ xs: 5, sm: 10 }} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -36,7 +65,7 @@ function OnlineScore() {
 
                 <Typography variant="h6" align="center">{otherPlayerLeft ? 'Your opponent left the game!' : iLostOnTimeout ? 'You ran out of time!' : 'Your opponent ran out of time!'}</Typography>
                 {
-                    mode === "Turn-based" ||
+                    mode === "turn-based" ||
                     <Stack>
                         <Typography variant="h4" align="center">Final Scores</Typography>
                         <Stack direction="row" spacing={10} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -57,8 +86,11 @@ function OnlineScore() {
                         </Stack>
                     </Stack>
                 }
-
-                <StyledButton color='primary' variant='contained' sx={{ width: 1 / 3, alignSelf: 'center' }} onClick={() => { navigate('/') }}>Home</StyledButton>
+                <Stack spacing={2} direction='row' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <StyledButton color='primary' variant='contained' sx={{ width: 1 / 3, alignSelf: 'center' }} onClick={handleRematch}>Rematch {wantsRematch ? '1' : '0'}/2</StyledButton>
+                    <StyledButton color='primary' variant='contained' sx={{ width: 1 / 3, alignSelf: 'center' }} onClick={() => { navigate('/') }}>Home</StyledButton>
+                </Stack>
+                <Typography variant='h6'>{wantsRematchMessage}</Typography>
             </Stack>
         </Stack>
     )
