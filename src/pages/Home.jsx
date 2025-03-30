@@ -32,11 +32,6 @@ function Home() {
                 <StyledButton color='primary' variant='contained' startIcon={<GroupIcon />} onClick={() => setIsModeModalOpen(true)}>Play with friends</StyledButton>
                 <StyledButton color='primary' variant='outlined' sx={{ color: 'text.main' }} onClick={() => setIsHTPModalOpen(true)}>How to play</StyledButton>
             </Stack>
-            <Stack direction='row' spacing={5} justifyContent='center' sx={{ borderTop: 'solid', borderColor: 'text.main', pt: 1 }}>
-                <Button sx={{ color: 'text.main', textDecoration: 'underline', ':hover': { borderColor: 'primary.main', textDecoration: 'underline' }, fontSize: 12 }} onClick={() => openInNewTab('https://github.com/Sniperplank/KeepTyping/tree/main/src/categories')}>Categories</Button>
-                <Button sx={{ color: 'text.main', textDecoration: 'underline', ':hover': { borderColor: 'primary.main', textDecoration: 'underline' }, fontSize: 12 }}>Credit</Button>
-                <Button sx={{ color: 'text.main', textDecoration: 'underline', ':hover': { borderColor: 'primary.main', textDecoration: 'underline' }, fontSize: 12 }}>Report a bug</Button>
-            </Stack>
             <HowToModal open={isHTPModalOpen} onClose={() => setIsHTPModalOpen(false)} />
             <OnlineModeModal open={isModeModalOpen} onClose={() => setIsModeModalOpen(false)} />
         </Stack >
