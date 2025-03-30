@@ -1,14 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ModalOverlay } from './styledComponents/ModalOverlay'
-import { ModalContent } from './styledComponents/ModalContent'
+import { ModalOverlay } from '../styledComponents/ModalOverlay'
+import { ModalContent } from '../styledComponents/ModalContent'
 import { Button, Stack, Typography } from '@mui/material'
-import { StyledButton } from './styledComponents/StyledButton'
+import { StyledButton } from '../styledComponents/StyledButton'
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
 import ShapeLineIcon from '@mui/icons-material/ShapeLine'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import socket from './socketService'
+import socket from '../socketService'
 
 function OnlineModeModal({ open, onClose }) {
     const navigate = useNavigate()

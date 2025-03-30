@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Accordion, AccordionDetails, AccordionSummary, Button, Stack, Typography } from '@mui/material'
-import { ModalOverlay } from './styledComponents/ModalOverlay'
-import { ModalContent } from './styledComponents/ModalContent'
+import { ModalOverlay } from '../styledComponents/ModalOverlay'
+import { ModalContent } from '../styledComponents/ModalContent'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { useTheme } from './contexts/themeContext'
+import { useTheme } from '../contexts/themeContext'
 
 function HowToModal({ open, onClose }) {
     const [expanded, setExpanded] = useState('panel1')

@@ -1,6 +1,7 @@
-import { Stack, Typography, ThemeProvider, TextField } from '@mui/material'
-import { darkTheme } from './darkTheme'
-import { lightTheme } from './lightTheme'
+import React, { useState } from 'react'
+import { Stack, Typography, ThemeProvider } from '@mui/material'
+import { darkTheme } from './themes/darkTheme'
+import { lightTheme } from './themes/lightTheme'
 import { useTheme } from './contexts/themeContext'
 import './App.css'
 import { StyledIconButton } from './styledComponents/StyledIconButton'
@@ -11,7 +12,6 @@ import QuickGame from './pages/QuickGame'
 import Score from './pages/Score'
 import Home from './pages/Home'
 import { StyledButton } from './styledComponents/StyledButton'
-import KeyboardIcon from '@mui/icons-material/Keyboard'
 import HardGame from './pages/HardGame'
 import CategoriesGame from './pages/CategoriesGame'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
@@ -21,10 +21,13 @@ import Room from './pages/Room'
 import OnlineQuickGame from './pages/OnlineQuickGame'
 import OnlineHardGame from './pages/OnlineHardGame'
 import OnlineScore from './pages/OnlineScore'
+import MenuModal from './modals/MenuModal'
+import MenuIcon from '@mui/icons-material/Menu'
 
 function App() {
   const { isDarkMode, setIsDarkMode } = useTheme()
   const { isVolumeOn, setIsVolumeOn } = useVolume()
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false)
   const location = useLocation()
 
   document.body.style.backgroundColor = isDarkMode ? '#171717' : '#fafafa'
@@ -35,8 +38,7 @@ function App() {
       <Stack>
         <Stack direction='row' justifyContent='space-around' sx={{ mb: 15 }}>
           <Stack direction='row' spacing={2} alignItems='center'>
-            <KeyboardIcon fontSize='large' color='primary' />
-            {location.pathname !== '/' && <Typography variant='h5' color='primary' fontWeight='bold'>KeepTyping</Typography>}
+            <MenuIcon fontSize='large' color='primary' onClick={() => setIsMenuModalOpen(true)} />
           </Stack>
           <Stack direction='row' spacing={2}>
             <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }}>
@@ -60,6 +62,7 @@ function App() {
           <Route path='/match-over' element={<OnlineScore />} />
         </Routes>
       </Stack>
+      <MenuModal open={isMenuModalOpen} onClose={() => setIsMenuModalOpen(false)} />
     </ ThemeProvider >
 
   )
