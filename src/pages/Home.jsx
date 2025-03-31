@@ -14,11 +14,6 @@ function Home() {
     const [isModeModalOpen, setIsModeModalOpen] = useState(false)
     const navigate = useNavigate()
 
-    const openInNewTab = (url) => {
-        const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
-        if (newWindow) newWindow.opener = null
-    }
-
     return (
         <Stack spacing={{ xs: 3, sm: 10 }} justifyContent='center'>
             <Typography variant='h1' color='primary' fontWeight='bold' alignSelf='center' sx={{ fontSize: { xs: 50, sm: 100 } }}>KeepTyping</Typography>
