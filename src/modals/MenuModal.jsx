@@ -6,15 +6,19 @@ import { ModalContent } from '../styledComponents/ModalContent'
 import { useTheme } from '../contexts/themeContext'
 import { StyledButton } from '../styledComponents/StyledButton'
 import { StyledIconButton } from '../styledComponents/StyledIconButton'
+import { useVolume } from '../contexts/volumeContext'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import ModeNightIcon from '@mui/icons-material/ModeNight'
 import BugReportIcon from '@mui/icons-material/BugReport'
 import InfoIcon from '@mui/icons-material/Info'
 import AddIcon from '@mui/icons-material/Add'
 import FileCopyIcon from '@mui/icons-material/FileCopy'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
+import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 
 function MenuModal({ open, onClose }) {
     const { isDarkMode, setIsDarkMode } = useTheme()
+    const { isVolumeOn, setIsVolumeOn } = useVolume()
 
     const openInNewTab = (url) => {
         const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
@@ -35,9 +39,14 @@ function MenuModal({ open, onClose }) {
                         <StyledButton variant='outlined' color='primary' sx={{ color: 'text.main', textTransform: 'none', justifyContent: 'flex-start' }} startIcon={<InfoIcon />} onClick={() => openInNewTab('https://github.com/Sniperplank')}>About Me</StyledButton>
                     </Stack>
                     <Stack spacing={2} sx={{ borderTop: 'solid', borderColor: 'text.main', pt: '10px' }}>
-                        <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }} sx={{ alignSelf: 'center' }}>
-                            {isDarkMode ? <LightModeIcon color={'primary'} /> : <ModeNightIcon color={'primary'} />}
-                        </StyledIconButton>
+                        <Stack direction='row' justifyContent='space-evenly'>
+                            <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }} sx={{ alignSelf: 'center' }}>
+                                {isDarkMode ? <LightModeIcon color={'primary'} /> : <ModeNightIcon color={'primary'} />}
+                            </StyledIconButton>
+                            <StyledIconButton onClick={() => { setIsVolumeOn(prev => !prev) }}>
+                                {isVolumeOn ? <VolumeUpIcon color={'primary'} /> : <VolumeOffIcon color={'primary'} />}
+                            </StyledIconButton>
+                        </Stack>
                         <StyledButton variant='contained' color='primary'>Sign In</StyledButton>
                     </Stack>
                 </Stack>
