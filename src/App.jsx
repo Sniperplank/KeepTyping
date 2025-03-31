@@ -38,7 +38,7 @@ function App() {
       <Stack>
         <Stack direction='row' justifyContent='space-around' sx={{ mb: 15 }}>
           <Stack direction='row' spacing={2} alignItems='center'>
-            <MenuIcon fontSize='large' color='primary' onClick={() => setIsMenuModalOpen(true)} />
+            <MenuIcon fontSize='large' color='primary' onClick={() => setIsMenuModalOpen(true)} sx={{ ':hover': { cursor: 'pointer' } }} />
           </Stack>
           <Stack direction='row' spacing={2}>
             <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }}>
