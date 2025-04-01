@@ -137,7 +137,7 @@ function Room() {
 
     return (
         <Stack spacing={4}>
-            <Typography variant="h2" align="center">{status !== "" ? status : error}</Typography>
+            <Typography variant="h2" align="center">{status !== "" ? status : error !== "" ? error : "Loading..."}</Typography>
             {countdown !== null && !error && (
                 <Stack spacing={2}>
                     <Stack direction='row' spacing={2} sx={{ alignSelf: 'center' }}>
