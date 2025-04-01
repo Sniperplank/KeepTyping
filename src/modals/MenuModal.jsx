@@ -38,17 +38,15 @@ function MenuModal({ open, onClose }) {
                         <StyledButton variant='outlined' color='primary' sx={{ color: 'text.main', textTransform: 'none', justifyContent: 'flex-start' }} startIcon={<BugReportIcon />}>Report a bug</StyledButton>
                         <StyledButton variant='outlined' color='primary' sx={{ color: 'text.main', textTransform: 'none', justifyContent: 'flex-start' }} startIcon={<InfoIcon />} onClick={() => openInNewTab('https://github.com/Sniperplank')}>About Me</StyledButton>
                     </Stack>
-                    <Stack spacing={2} sx={{ borderTop: 'solid', borderColor: 'text.main', pt: '10px' }}>
-                        <Stack direction='row' justifyContent='space-evenly'>
-                            <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }} sx={{ alignSelf: 'center' }}>
-                                {isDarkMode ? <LightModeIcon color={'primary'} /> : <ModeNightIcon color={'primary'} />}
-                            </StyledIconButton>
-                            <StyledIconButton onClick={() => { setIsVolumeOn(prev => !prev) }}>
-                                {isVolumeOn ? <VolumeUpIcon color={'primary'} /> : <VolumeOffIcon color={'primary'} />}
-                            </StyledIconButton>
-                        </Stack>
-                        <StyledButton variant='contained' color='primary'>Sign In</StyledButton>
+                    <Stack direction='row' justifyContent='space-evenly' sx={{ width: '100%', borderTop: 'solid', borderBottom: 'solid', borderColor: 'text.main', pt: '10px', pb: '10px' }}>
+                        <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }} sx={{ alignSelf: 'center' }}>
+                            {isDarkMode ? <LightModeIcon color={'primary'} /> : <ModeNightIcon color={'secondary.main'} />}
+                        </StyledIconButton>
+                        <StyledIconButton onClick={() => { setIsVolumeOn(prev => !prev) }}>
+                            {isVolumeOn ? <VolumeUpIcon color={isDarkMode ? 'primary' : 'secondary.main'} /> : <VolumeOffIcon color={isDarkMode ? 'primary' : 'secondary.main'} />}
+                        </StyledIconButton>
                     </Stack>
+                    <StyledButton variant='contained' color='primary'>Sign In</StyledButton>
                 </Stack>
                 <Button variant='outlined' color='error' onClick={onClose} sx={{ position: 'absolute', bottom: '150px', height: 40, color: 'text.main' }}>Close</Button>
             </ModalContent>

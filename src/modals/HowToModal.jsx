@@ -62,7 +62,7 @@ function HowToModal({ open, onClose }) {
                     <Typography variant='h6'>Type fast, think faster, and KEEP TYPING. Ready to play?</Typography>
                 </Stack>
                 <Stack direction='row' spacing={2} marginTop={3} justifyContent='right'>
-                    <Button variant='contained' color='primary' onClick={onClose}>Close</Button>
+                    <Button variant='contained' color='primary' onClick={onClose}>Ready</Button>
                 </Stack>
             </ModalContent>
         </>,
