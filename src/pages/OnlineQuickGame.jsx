@@ -199,7 +199,7 @@ function OnlineQuickGame() {
     }
 
     return (
-        <Stack spacing={{ xs: 5, sm: 10 }} direction='row' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Stack spacing={{ xs: 5, sm: 10 }} direction={{ xs: 'column', sm: 'row' }} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Stack spacing={1} sx={{ alignSelf: 'center', alignItems: 'center', width: 150, border: '2px solid', borderColor: 'primary.main', p: 2, borderRadius: 2, height: 150 }}>
                 <Box component="img" src={avatarImages[myAvatar]} width={120} height={120} />
                 <Typography variant="h6">{myScore}</Typography>
