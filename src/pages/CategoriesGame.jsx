@@ -87,7 +87,7 @@ function CategoriesGame() {
         }
     }, [timeLeft])
 
-    const handleWordSubmit = event => {
+    const handleKeydown = event => {
         // Play sound only for alphanumeric keys (letters and numbers)
         const isAlphanumeric = /^[a-zA-Z0-9]$/.test(event.key)
 
@@ -95,161 +95,164 @@ function CategoriesGame() {
             typingAudioRef.current.currentTime = 0
             typingAudioRef.current.play().catch(e => console.error("Error playing 'typing' audio:", e))
         }
+    }
 
-        if (event.keyCode === 13) { // Enter key was pressed
-            switch (chosenCategory.toUpperCase()) {
-                case 'ANIMAL':
-                    if (animalsList.includes(inputWord.toUpperCase())) {
-                        if (inputWord.toUpperCase().includes(letter)) {
-                            if (usedWords.includes(inputWord.toUpperCase())) {
-                                setError('Already used this word!')
-                                if (wrongAudioRef.current && isVolumeOn) {
-                                    wrongAudioRef.current.currentTime = 0
-                                    wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
-                                }
-                                return
-                            }
-                            setError('')
-                            setUsedWords([...usedWords, inputWord.toUpperCase()])
-                            setScore(prev => prev + 1)
-                            setInputWord('')
-                            setTimeLeft(time)
-                            setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
-                            setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
-                            if (correctAudioRef.current && isVolumeOn) {
-                                correctAudioRef.current.currentTime = 0
-                                correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
-                            }
-                        } else {
-                            setError('Word must include the letter ' + letter)
+    const handleWordSubmit = event => {
+        event.preventDefault()
+
+        switch (chosenCategory.toUpperCase()) {
+            case 'ANIMAL':
+                if (animalsList.includes(inputWord.toUpperCase())) {
+                    if (inputWord.toUpperCase().includes(letter)) {
+                        if (usedWords.includes(inputWord.toUpperCase())) {
+                            setError('Already used this word!')
                             if (wrongAudioRef.current && isVolumeOn) {
                                 wrongAudioRef.current.currentTime = 0
                                 wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                             }
+                            return
+                        }
+                        setError('')
+                        setUsedWords([...usedWords, inputWord.toUpperCase()])
+                        setScore(prev => prev + 1)
+                        setInputWord('')
+                        setTimeLeft(time)
+                        setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
+                        setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
+                        if (correctAudioRef.current && isVolumeOn) {
+                            correctAudioRef.current.currentTime = 0
+                            correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
                         }
                     } else {
-                        setError('Not an animal :/')
+                        setError('Word must include the letter ' + letter)
                         if (wrongAudioRef.current && isVolumeOn) {
                             wrongAudioRef.current.currentTime = 0
                             wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                         }
                     }
-                    break;
-                case 'COUNTRY':
-                    if (countriesList.includes(inputWord.toUpperCase())) {
-                        if (inputWord.toUpperCase().includes(letter)) {
-                            if (usedWords.includes(inputWord.toUpperCase())) {
-                                setError('Already used this word!')
-                                if (wrongAudioRef.current && isVolumeOn) {
-                                    wrongAudioRef.current.currentTime = 0
-                                    wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
-                                }
-                                return
-                            }
-                            setError('')
-                            setUsedWords([...usedWords, inputWord.toUpperCase()])
-                            setScore(prev => prev + 1)
-                            setInputWord('')
-                            setTimeLeft(time)
-                            setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
-                            setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
-                            if (correctAudioRef.current && isVolumeOn) {
-                                correctAudioRef.current.currentTime = 0
-                                correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
-                            }
-                        } else {
-                            setError('Word must include the letter ' + letter)
+                } else {
+                    setError('Not an animal :/')
+                    if (wrongAudioRef.current && isVolumeOn) {
+                        wrongAudioRef.current.currentTime = 0
+                        wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                    }
+                }
+                break;
+            case 'COUNTRY':
+                if (countriesList.includes(inputWord.toUpperCase())) {
+                    if (inputWord.toUpperCase().includes(letter)) {
+                        if (usedWords.includes(inputWord.toUpperCase())) {
+                            setError('Already used this word!')
                             if (wrongAudioRef.current && isVolumeOn) {
                                 wrongAudioRef.current.currentTime = 0
                                 wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                             }
+                            return
+                        }
+                        setError('')
+                        setUsedWords([...usedWords, inputWord.toUpperCase()])
+                        setScore(prev => prev + 1)
+                        setInputWord('')
+                        setTimeLeft(time)
+                        setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
+                        setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
+                        if (correctAudioRef.current && isVolumeOn) {
+                            correctAudioRef.current.currentTime = 0
+                            correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
                         }
                     } else {
-                        setError('Not a country :/')
+                        setError('Word must include the letter ' + letter)
                         if (wrongAudioRef.current && isVolumeOn) {
                             wrongAudioRef.current.currentTime = 0
                             wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                         }
                     }
-                    break;
-                case 'PLANT':
-                    if (plantsList.includes(inputWord.toUpperCase())) {
-                        if (inputWord.toUpperCase().includes(letter)) {
-                            if (usedWords.includes(inputWord.toUpperCase())) {
-                                setError('Already used this word!')
-                                if (wrongAudioRef.current && isVolumeOn) {
-                                    wrongAudioRef.current.currentTime = 0
-                                    wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
-                                }
-                                return
-                            }
-                            setError('')
-                            setUsedWords([...usedWords, inputWord.toUpperCase()])
-                            setScore(prev => prev + 1)
-                            setInputWord('')
-                            setTimeLeft(time)
-                            setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
-                            setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
-                            if (correctAudioRef.current && isVolumeOn) {
-                                correctAudioRef.current.currentTime = 0
-                                correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
-                            }
-                        } else {
-                            setError('Word must include the letter ' + letter)
+                } else {
+                    setError('Not a country :/')
+                    if (wrongAudioRef.current && isVolumeOn) {
+                        wrongAudioRef.current.currentTime = 0
+                        wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                    }
+                }
+                break;
+            case 'PLANT':
+                if (plantsList.includes(inputWord.toUpperCase())) {
+                    if (inputWord.toUpperCase().includes(letter)) {
+                        if (usedWords.includes(inputWord.toUpperCase())) {
+                            setError('Already used this word!')
                             if (wrongAudioRef.current && isVolumeOn) {
                                 wrongAudioRef.current.currentTime = 0
                                 wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                             }
+                            return
+                        }
+                        setError('')
+                        setUsedWords([...usedWords, inputWord.toUpperCase()])
+                        setScore(prev => prev + 1)
+                        setInputWord('')
+                        setTimeLeft(time)
+                        setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
+                        setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
+                        if (correctAudioRef.current && isVolumeOn) {
+                            correctAudioRef.current.currentTime = 0
+                            correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
                         }
                     } else {
-                        setError('Not a plant :/')
+                        setError('Word must include the letter ' + letter)
                         if (wrongAudioRef.current && isVolumeOn) {
                             wrongAudioRef.current.currentTime = 0
                             wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                         }
                     }
-                    break;
-                case 'COLOR':
-                    if (colorsList.includes(inputWord.toUpperCase())) {
-                        if (inputWord.toUpperCase().includes(letter)) {
-                            if (usedWords.includes(inputWord.toUpperCase())) {
-                                setError('Already used this word!')
-                                if (wrongAudioRef.current && isVolumeOn) {
-                                    wrongAudioRef.current.currentTime = 0
-                                    wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
-                                }
-                                return
-                            }
-                            setError('')
-                            setUsedWords([...usedWords, inputWord.toUpperCase()])
-                            setScore(prev => prev + 1)
-                            setInputWord('')
-                            setTimeLeft(time)
-                            setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
-                            setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
-                            if (correctAudioRef.current && isVolumeOn) {
-                                correctAudioRef.current.currentTime = 0
-                                correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
-                            }
-                        } else {
-                            setError('Word must include the letter ' + letter)
+                } else {
+                    setError('Not a plant :/')
+                    if (wrongAudioRef.current && isVolumeOn) {
+                        wrongAudioRef.current.currentTime = 0
+                        wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                    }
+                }
+                break;
+            case 'COLOR':
+                if (colorsList.includes(inputWord.toUpperCase())) {
+                    if (inputWord.toUpperCase().includes(letter)) {
+                        if (usedWords.includes(inputWord.toUpperCase())) {
+                            setError('Already used this word!')
                             if (wrongAudioRef.current && isVolumeOn) {
                                 wrongAudioRef.current.currentTime = 0
                                 wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                             }
+                            return
+                        }
+                        setError('')
+                        setUsedWords([...usedWords, inputWord.toUpperCase()])
+                        setScore(prev => prev + 1)
+                        setInputWord('')
+                        setTimeLeft(time)
+                        setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
+                        setChosenCategory(categories[Math.floor(Math.random() * categories.length)])
+                        if (correctAudioRef.current && isVolumeOn) {
+                            correctAudioRef.current.currentTime = 0
+                            correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
                         }
                     } else {
-                        setError('Not a color :/')
+                        setError('Word must include the letter ' + letter)
                         if (wrongAudioRef.current && isVolumeOn) {
                             wrongAudioRef.current.currentTime = 0
                             wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                         }
                     }
-                    break;
-                default:
-                    break;
-            }
+                } else {
+                    setError('Not a color :/')
+                    if (wrongAudioRef.current && isVolumeOn) {
+                        wrongAudioRef.current.currentTime = 0
+                        wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+                    }
+                }
+                break;
+            default:
+                break;
         }
+
     }
 
     return (
@@ -263,7 +266,10 @@ function CategoriesGame() {
                 </Stack>
                 <Typography variant='h2' color='primary'>{letter}</Typography>
             </Stack>
-            <StyledInput type="text" value={inputWord} InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onChange={e => setInputWord(e.target.value)} onKeyDown={handleWordSubmit} inputProps={{ style: { fontSize: 40 }, autoComplete: 'off' }} />
+            <form onSubmit={handleWordSubmit}>
+                <StyledInput type="text" value={inputWord} InputLabelProps={{ shrink: true, }} variant="standard" autoFocus sx={{ width: '50%' }} onChange={e => setInputWord(e.target.value)} onKeyDown={handleKeydown} inputProps={{ style: { fontSize: 40 }, autoComplete: 'off' }} />
+                <button type="submit" style={{ display: 'none' }}>Submit</button>
+            </form>
             <Typography variant='h6' color='red'>{error}</Typography>
             <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main' }} onClick={() => { navigate(-1) }}>Back</StyledButton>
             <p className='timer'>{timeLeft}</p>

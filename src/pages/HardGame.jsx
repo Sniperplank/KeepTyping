@@ -85,59 +85,51 @@ function HardGame() {
     }
 
     const handleWordSubmit = event => {
-        // Play sound only for alphanumeric keys (letters and numbers)
-        const isAlphanumeric = /^[a-zA-Z0-9]$/.test(event.key)
-
-        if (isAlphanumeric && typingAudioRef.current && isVolumeOn) {
-            typingAudioRef.current.currentTime = 0
-            typingAudioRef.current.play().catch(e => console.error("Error playing 'typing' audio:", e))
-        }
-
-        if (event.keyCode === 13) { // Enter key was pressed
-            if (inputWord.length === wordLength) {
-                if (wordList.includes(inputWord.toUpperCase())) {
-                    if (inputWord.charAt(0).toUpperCase() == letter) {
-                        if (usedWords.includes(inputWord)) {
-                            setError('Already used this word!')
-                            if (wrongAudioRef.current && isVolumeOn) {
-                                wrongAudioRef.current.currentTime = 0
-                                wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
-                            }
-                            return
-                        }
-                        setError('')
-                        setUsedWords([...usedWords, inputWord])
-                        setScore(prev => prev + 1)
-                        setInputWord('')
-                        setTimeLeft(time)
-                        setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
-                        setWordLength(Math.floor(Math.random() * (6 - 3 + 1)) + 3)
-                        if (correctAudioRef.current && isVolumeOn) {
-                            correctAudioRef.current.currentTime = 0
-                            correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
-                        }
-                    } else {
-                        setError('Word must start with ' + letter)
+        event.preventDefault()
+        if (inputWord.length === wordLength) {
+            if (wordList.includes(inputWord.toUpperCase())) {
+                if (inputWord.charAt(0).toUpperCase() == letter) {
+                    if (usedWords.includes(inputWord)) {
+                        setError('Already used this word!')
                         if (wrongAudioRef.current && isVolumeOn) {
                             wrongAudioRef.current.currentTime = 0
                             wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                         }
+                        return
+                    }
+                    setError('')
+                    setUsedWords([...usedWords, inputWord])
+                    setScore(prev => prev + 1)
+                    setInputWord('')
+                    setTimeLeft(time)
+                    setLetter(inputWord.charAt(inputWord.length - 1).toUpperCase())
+                    setWordLength(Math.floor(Math.random() * (6 - 3 + 1)) + 3)
+                    if (correctAudioRef.current && isVolumeOn) {
+                        correctAudioRef.current.currentTime = 0
+                        correctAudioRef.current.play().catch(e => console.error("Error playing 'correct' audio:", e))
                     }
                 } else {
-                    setError('Not a word :/')
+                    setError('Word must start with ' + letter)
                     if (wrongAudioRef.current && isVolumeOn) {
                         wrongAudioRef.current.currentTime = 0
                         wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                     }
                 }
             } else {
-                setError(`Word must be ${wordLength} letters long!`)
+                setError('Not a word :/')
                 if (wrongAudioRef.current && isVolumeOn) {
                     wrongAudioRef.current.currentTime = 0
                     wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
                 }
             }
+        } else {
+            setError(`Word must be ${wordLength} letters long!`)
+            if (wrongAudioRef.current && isVolumeOn) {
+                wrongAudioRef.current.currentTime = 0
+                wrongAudioRef.current.play().catch(e => console.error("Error playing 'wrong' audio:", e))
+            }
         }
+
     }
 
     return (
@@ -151,7 +143,7 @@ function HardGame() {
                 </Stack>
                 <Typography variant='h2' color='primary'>{letter}</Typography>
             </Stack>
-            <CharacterInput length={wordLength} value={inputWord} onChange={handleWordChange} onKeyDown={handleWordSubmit} />
+            <CharacterInput length={wordLength} value={inputWord} onChange={handleWordChange} handleWordSubmit={handleWordSubmit} />
             <Typography variant='h5' color='red'>{error}</Typography>
             <StyledButton color='error' variant='outlined' sx={{ width: '20%', color: 'text.main' }} onClick={() => { navigate(-1) }}>Back</StyledButton>
             <p className='timer'>{timeLeft}</p>

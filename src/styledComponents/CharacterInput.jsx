@@ -4,7 +4,7 @@ import { StyledInput } from './StyledInput'
 import typingsound from '../sounds/typingsound.mp3'
 import { useVolume } from '../contexts/volumeContext'
 
-const CharacterInput = ({ length, onChange, onKeyDown, value = '', disabled = false }) => {
+const CharacterInput = ({ length, onChange, value = '', disabled = false, handleWordSubmit }) => {
     const [chars, setChars] = useState(Array(length).fill(''))
     const inputRefs = useRef([])
     const typingAudioRef = useRef(null)
@@ -72,13 +72,7 @@ const CharacterInput = ({ length, onChange, onKeyDown, value = '', disabled = fa
         }
 
         // Pass keydown event to parent when Enter is pressed
-        if (e.key === 'Enter' && onKeyDown) {
-            onKeyDown({
-                keyCode: 13,
-                key: 'Enter',
-                target: { value: chars.join('') }
-            })
-
+        if (e.key === 'Enter') {
             // Reset the input boxes and focus the first one
             setChars(Array(length).fill(''))
             inputRefs.current[0].focus()
@@ -86,34 +80,37 @@ const CharacterInput = ({ length, onChange, onKeyDown, value = '', disabled = fa
     }
 
     return (
-        <Box sx={{ display: 'flex', gap: 2, width: '100%', justifyContent: 'center' }}>
-            {Array.from({ length }).map((_, index) => (
-                <StyledInput
-                    key={index}
-                    inputRef={(el) => (inputRefs.current[index] = el)}
-                    value={chars[index] || ''}
-                    onChange={(e) => handleChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
-                    inputProps={{
-                        maxLength: 1,
-                        style: {
-                            textAlign: 'center',
-                            padding: '0',
-                            width: '70px',
-                            height: '70px',
-                            fontSize: '28px',
-                            fontWeight: 'bold'
-                        }
-                    }}
-                    disabled={disabled}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck="false"
-                    variant="outlined"
-                />
-            ))}
-        </Box>
+        <form onSubmit={handleWordSubmit}>
+            <Box sx={{ display: 'flex', gap: 2, width: '100%', justifyContent: 'center' }}>
+                {Array.from({ length }).map((_, index) => (
+                    <StyledInput
+                        key={index}
+                        inputRef={(el) => (inputRefs.current[index] = el)}
+                        value={chars[index] || ''}
+                        onChange={(e) => handleChange(index, e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(index, e)}
+                        inputProps={{
+                            maxLength: 1,
+                            style: {
+                                textAlign: 'center',
+                                padding: '0',
+                                width: '70px',
+                                height: '70px',
+                                fontSize: '28px',
+                                fontWeight: 'bold'
+                            }
+                        }}
+                        disabled={disabled}
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
+                        variant="outlined"
+                    />
+                ))}
+                <button type="submit" style={{ display: 'none' }}>Submit</button>
+            </Box>
+        </form>
     )
 }
 
