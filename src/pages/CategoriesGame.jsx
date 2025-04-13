@@ -12,7 +12,7 @@ import correctsound from '../sounds/correct.mp3'
 import wrongsound from '../sounds/wrong.mp3'
 import { useVolume } from '../contexts/volumeContext'
 
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWYZ"
 const time = 10
 const categories = ['Animal', 'Plant', 'Country', 'Color']
 

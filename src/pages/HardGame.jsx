@@ -9,7 +9,7 @@ import typingsound from '../sounds/typingsound.mp3'
 import correctsound from '../sounds/correct.mp3'
 import wrongsound from '../sounds/wrong.mp3'
 
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWYZ"
 const time = 6
 
 function HardGame() {
