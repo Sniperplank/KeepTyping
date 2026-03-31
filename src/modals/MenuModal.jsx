@@ -37,6 +37,7 @@ function MenuModal({ open, onClose }) {
                         <StyledButton variant='outlined' color='primary' sx={{ color: 'text.main', textTransform: 'none', justifyContent: 'flex-start' }} startIcon={<AddIcon />}>Add a Word</StyledButton>
                         <StyledButton variant='outlined' color='primary' sx={{ color: 'text.main', textTransform: 'none', justifyContent: 'flex-start' }} startIcon={<BugReportIcon />}>Report a bug</StyledButton>
                         <StyledButton variant='outlined' color='primary' sx={{ color: 'text.main', textTransform: 'none', justifyContent: 'flex-start' }} startIcon={<InfoIcon />} onClick={() => openInNewTab('https://github.com/Sniperplank')}>About Me</StyledButton>
+                        <Typography variant='h6' sx={{ mb: 5 }}>Developed by Eilaf</Typography>
                     </Stack>
                     <Stack direction='row' justifyContent='space-evenly' sx={{ width: '100%', borderTop: 'solid', borderBottom: 'solid', borderColor: 'text.main', pt: '10px', pb: '10px' }}>
                         <StyledIconButton onClick={() => { setIsDarkMode(prev => !prev) }} sx={{ alignSelf: 'center' }}>
