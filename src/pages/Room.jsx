@@ -39,7 +39,7 @@ function Room() {
     const [allAvatars, setAllAvatars] = useState({})
     const [error, setError] = useState("")
     // const url = `http://localhost:5173/room/${roomCode}?mode=${mode}`
-    const url = `https://keep-typing.vercel.app/room/${roomCode}?mode=${mode}`
+    const url = `https://sniperplank.github.io/KeepTyping/room/${roomCode}?mode=${mode}`
 
     useEffect(() => {
         if (!roomCode) return  // Prevents undefined room codes
