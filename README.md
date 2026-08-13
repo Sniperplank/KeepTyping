@@ -1,4 +1,4 @@
 ﻿# KeepTyping
  
  
-https://keep-typing.vercel.app/
+https://sniperplank.github.io/KeepTyping
