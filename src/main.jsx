@@ -13,7 +13,7 @@ import { VolumeProvider } from './contexts/volumeContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='/KeepTyping'>
       <ModeProvider>
         <WordListProvider>
           <AnimalListProvider>
